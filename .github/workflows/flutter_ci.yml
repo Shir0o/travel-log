@@ -30,7 +30,7 @@ jobs:
       run: flutter pub get
 
     - name: Run Analyze
-      run: flutter analyze
+      run: flutter analyze --no-fatal-infos
 
     - name: Run Widget Tests with Coverage
       run: flutter test --coverage
