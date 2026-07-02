@@ -8,16 +8,16 @@ import 'screens/banger_screen.dart';
 import 'widgets/brutal_widgets.dart';
 
 void main() {
-  runApp(const TravelLogApp());
+  runApp(const RoadSongApp());
 }
 
-class TravelLogApp extends StatelessWidget {
-  const TravelLogApp({Key? key}) : super(key: key);
+class RoadSongApp extends StatelessWidget {
+  const RoadSongApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Travel Log',
+      title: 'Road Song',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: BrutalTheme.backgroundLight,

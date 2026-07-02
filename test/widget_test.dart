@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:travel_log/main.dart';
+import 'package:road_song/main.dart';
 
 void main() {
   setUpAll(() {
@@ -12,7 +12,7 @@ void main() {
 
   testWidgets('App smoke test - verifies Scrapbook loads', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const TravelLogApp());
+    await tester.pumpWidget(const RoadSongApp());
 
     // Verify that the title of the scrapbook screen is displayed.
     expect(find.text('YOUR MESSY TRIPS'), findsOneWidget);

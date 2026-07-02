@@ -1,6 +1,6 @@
-# Contributing to Travel Log
+# Contributing to Road Song
 
-Thank you for your interest in contributing to Travel Log! This document outlines guidelines and procedures for contributing to our open-source project.
+Thank you for your interest in contributing to Road Song! This document outlines guidelines and procedures for contributing to our open-source project.
 
 By participating, you agree to uphold our [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -10,7 +10,7 @@ By participating, you agree to uphold our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ### Prerequisites
 
-To build and run Travel Log, you will need:
+To build and run Road Song, you will need:
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable channel)
 - [Dart SDK](https://dart.dev/get-started) (included with Flutter)
 - A configured simulator, emulator, or physical device (iOS, Android, macOS, Web, Windows, or Linux)
@@ -19,8 +19,8 @@ To build and run Travel Log, you will need:
 
 1. **Fork** and **Clone** the repository:
    ```bash
-   git clone git@github.com:YOUR_USERNAME/travel-log.git
-   cd travel-log
+   git clone git@github.com:YOUR_USERNAME/road-song.git
+   cd road-song
    ```
 2. **Fetch Dependencies**:
    ```bash
@@ -52,7 +52,7 @@ We follow the standard [Dart Style Guide](https://dart.dev/guides/language/effec
 
 ### Neo-Brutalist Design Aesthetics
 
-Travel Log has a strong, vibrant, high-contrast Neo-Brutalist design language. If you are adding or modifying UI components, please adhere to these aesthetics:
+Road Song has a strong, vibrant, high-contrast Neo-Brutalist design language. If you are adding or modifying UI components, please adhere to these aesthetics:
 
 - **Colors**: Use the color tokens in `BrutalTheme` (`lib/theme.dart`), such as:
   - `BrutalTheme.primary` (Neon Pink)

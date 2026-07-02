@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Propose a new feature or design enhancement for Travel Log
+about: Propose a new feature or design enhancement for Road Song
 title: '[FEATURE] '
 labels: enhancement
 assignees: ''
@@ -17,7 +17,7 @@ A clear and concise description of what you want to happen.
 A clear and concise description of any alternative solutions or features you've considered.
 
 **Visuals / Design Ideas**
-Since Travel Log relies heavily on a Neo-Brutalist visual language, please describe (or link mockups of) how this feature fits the aesthetic (neon colors, thick borders, heavy shadows, typewriter styling, etc.).
+Since Road Song relies heavily on a Neo-Brutalist visual language, please describe (or link mockups of) how this feature fits the aesthetic (neon colors, thick borders, heavy shadows, typewriter styling, etc.).
 
 **Additional context**
 Add any other context or screenshots about the feature request here.

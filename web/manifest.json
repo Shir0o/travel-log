@@ -1,6 +1,6 @@
 {
-    "name": "travel_log",
-    "short_name": "travel_log",
+    "name": "road_song",
+    "short_name": "road_song",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

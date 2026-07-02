@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We actively support and patch security issues in the following versions of Travel Log:
+We actively support and patch security issues in the following versions of Road Song:
 
 | Version | Supported          |
 | ------- | ------------------ |

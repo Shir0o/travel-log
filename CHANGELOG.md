@@ -12,8 +12,8 @@
 - **Tab Casing/Navigation Casing**: Fixed direct screen check in `MainShell` to be case-insensitive, resolving navigation issues from `ScrapbookScreen` dialog.
 
 ### Changed
-- **Project Rebranding**: Renamed package and all references from `vibe_sync_studio` (and company/bundle names like `com.vibesync`) to `travel_log`/`com.travel_log` across Android, iOS, macOS, Windows, Linux, and Web configurations.
-- **Git Remote**: Updated repository remote origin URL to `git@github.com:Shir0o/travel-log.git`.
+- **Project Rebranding**: Renamed package and all references to `road_song`/`com.road_song` across Android, iOS, macOS, Windows, Linux, and Web configurations.
+- **Git Remote**: Updated repository remote origin URL to `git@github.com:Shir0o/road-song.git`.
 
 ---
 

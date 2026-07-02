@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:travel_log/main.dart';
-import 'package:travel_log/widgets/brutal_widgets.dart';
-import 'package:travel_log/screens/typewriter_screen.dart';
-import 'package:travel_log/screens/evidence_screen.dart';
-import 'package:travel_log/screens/banger_screen.dart';
+import 'package:road_song/main.dart';
+import 'package:road_song/widgets/brutal_widgets.dart';
+import 'package:road_song/screens/typewriter_screen.dart';
+import 'package:road_song/screens/evidence_screen.dart';
+import 'package:road_song/screens/banger_screen.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -95,7 +95,7 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(const TravelLogApp());
+      await tester.pumpWidget(const RoadSongApp());
 
       // 1. We start on Scrapbook tab
       expect(find.text('YOUR MESSY TRIPS'), findsOneWidget);

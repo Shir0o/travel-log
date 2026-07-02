@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.travel_log" "\0"
-            VALUE "FileDescription", "travel_log" "\0"
+            VALUE "CompanyName", "com.road_song" "\0"
+            VALUE "FileDescription", "road_song" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "travel_log" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.travel_log. All rights reserved." "\0"
-            VALUE "OriginalFilename", "travel_log.exe" "\0"
-            VALUE "ProductName", "travel_log" "\0"
+            VALUE "InternalName", "road_song" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.road_song. All rights reserved." "\0"
+            VALUE "OriginalFilename", "road_song.exe" "\0"
+            VALUE "ProductName", "road_song" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

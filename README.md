@@ -1,6 +1,6 @@
-# Travel Log
+# Road Song
 
-[![Flutter CI](https://github.com/Shir0o/travel-log/workflows/Flutter%20CI/badge.svg)](https://github.com/Shir0o/travel-log/actions/workflows/flutter_ci.yml)
+[![Flutter CI](https://github.com/Shir0o/road-song/workflows/Flutter%20CI/badge.svg)](https://github.com/Shir0o/road-song/actions/workflows/flutter_ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A chaotic, high-contrast **Neo-Brutalist** Flutter application built to log messy trips, capture typewriter logs, gather evidence (receipts, notes, photos), and synthesize audio tracks from trip vibes.
@@ -9,7 +9,7 @@ A chaotic, high-contrast **Neo-Brutalist** Flutter application built to log mess
 
 ## 🎨 The Neo-Brutalist Aesthetic
 
-Travel Log rejects boring, flat, modern UI designs in favor of **Neo-Brutalism**:
+Road Song rejects boring, flat, modern UI designs in favor of **Neo-Brutalism**:
 - **High Contrast**: Flat, vibrant colors accented by thick `#111111` borders (`BrutalTheme.inkBlack`).
 - **Heavy Shadows**: Hard offset shadows (`Offset(4, 4)`) with no blur.
 - **Physical Details**: Polaroid-style photo layouts, mock Dymo tape labels, and physical tape overlays.
@@ -33,8 +33,8 @@ Travel Log rejects boring, flat, modern UI designs in favor of **Neo-Brutalism**
 
 1. Clone the repository:
    ```bash
-   git clone git@github.com:Shir0o/travel-log.git
-   cd travel-log
+   git clone git@github.com:Shir0o/road-song.git
+   cd road-song
    ```
 2. Install package dependencies:
    ```bash
@@ -49,7 +49,7 @@ Travel Log rejects boring, flat, modern UI designs in favor of **Neo-Brutalism**
 
 ## 🧪 Testing & Validation
 
-Travel Log maintains a strict **>= 90% test coverage** requirement on all pull requests, validated on every push via GitHub Actions.
+Road Song maintains a strict **>= 90% test coverage** requirement on all pull requests, validated on every push via GitHub Actions.
 
 - Run the full test suite (Widget & Unit tests):
   ```bash
