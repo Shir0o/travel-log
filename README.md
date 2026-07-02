@@ -1,4 +1,4 @@
-# vibe_sync_studio
+# travel_log
 
 A new Flutter project.
 

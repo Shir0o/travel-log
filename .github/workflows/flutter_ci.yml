@@ -1,0 +1,61 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests and Check Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Run Analyze
+      run: flutter analyze
+
+    - name: Run Widget Tests with Coverage
+      run: flutter test --coverage
+
+    - name: Check Coverage Percentage
+      run: |
+        # Parse coverage/lcov.info and assert it is >= 90%
+        python3 -c "
+        import sys
+        lf, lh = 0, 0
+        try:
+            with open('coverage/lcov.info') as f:
+                for line in f:
+                    if line.startswith('LF:'):
+                        lf += int(line.split(':')[1])
+                    elif line.startswith('LH:'):
+                        lh += int(line.split(':')[1])
+            coverage = lh / lf * 100 if lf else 0
+            print(f'Total coverage: {coverage:.2f}%')
+            if coverage < 90.0:
+                print('Coverage is below 90%!')
+                sys.exit(1)
+            else:
+                print('Coverage requirement of >= 90% satisfied.')
+        except FileNotFoundError:
+            print('Coverage file lcov.info not found!')
+            sys.exit(1)
+        "

@@ -1,4 +1,4 @@
-package com.vibesync.vibe_sync_studio
+package com.travel_log
 
 import io.flutter.embedding.android.FlutterActivity
 

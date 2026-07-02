@@ -8,16 +8,16 @@ import 'screens/banger_screen.dart';
 import 'widgets/brutal_widgets.dart';
 
 void main() {
-  runApp(const VibeSyncStudioApp());
+  runApp(const TravelLogApp());
 }
 
-class VibeSyncStudioApp extends StatelessWidget {
-  const VibeSyncStudioApp({Key? key}) : super(key: key);
+class TravelLogApp extends StatelessWidget {
+  const TravelLogApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Vibe-Sync Studio',
+      title: 'Travel Log',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: BrutalTheme.backgroundLight,
@@ -59,12 +59,12 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     // If we have an overlay screen (Typewriter or Evidence), render it directly
-    if (_currentDirectScreen == 'typewriter') {
+    if (_currentDirectScreen.toLowerCase() == 'typewriter') {
       return TypewriterScreen(
         onBack: () => _navigateToDirectScreen('tabs'),
         onProduceTrack: () => _navigateToTab(1), // Navigates to Studio tab
       );
-    } else if (_currentDirectScreen == 'evidence') {
+    } else if (_currentDirectScreen.toLowerCase() == 'evidence') {
       return EvidenceScreen(
         onBack: () => _navigateToDirectScreen('tabs'),
       );

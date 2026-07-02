@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = vibe_sync_studio
+PRODUCT_NAME = travel_log
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.vibesync.vibeSyncStudio
+PRODUCT_BUNDLE_IDENTIFIER = com.travel_log
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.vibesync. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.travel_log. All rights reserved.

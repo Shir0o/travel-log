@@ -184,10 +184,10 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               left: 0,
               right: 0,
               child: Container(
-                color: BrutalTheme.backgroundLight.withOpacity(0.9),
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                decoration: const BoxDecoration(
-                  border: Border(
+                decoration: BoxDecoration(
+                  color: BrutalTheme.backgroundLight.withOpacity(0.9),
+                  border: const Border(
                     bottom: BorderSide(color: Colors.black12, width: 2.0),
                   ),
                 ),

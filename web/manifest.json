@@ -1,6 +1,6 @@
 {
-    "name": "vibe_sync_studio",
-    "short_name": "vibe_sync_studio",
+    "name": "travel_log",
+    "short_name": "travel_log",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
