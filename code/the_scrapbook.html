@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Inside Joke - Scrapbook</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#FF007F",
+          "background-light": "#F9F8F6",
+          "background-dark": "#221019",
+          "surface-yellow": "#FFFF00",
+          "ink-black": "#111111",
+          "graphite": "#888888",
+          "cyan-accent": "#00E5FF"
+        },
+        fontFamily: {
+          "display": ["Space Mono", "monospace"],
+          "body": ["Courier Prime", "monospace"],
+          "hand": ["Caveat", "cursive"]
+        },
+        borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+        boxShadow: {
+          'hard': '4px 4px 0px 0px #111111',
+          'hard-hover': '2px 2px 0px 0px #111111',
+          'none': '0px 0px 0px 0px #111111',
+        }
+      },
+    },
+  }
+</script>
+<style>
+  body {
+    background-color: theme('colors.background-light');
+    position: relative;
+    font-family: theme('fontFamily.body');
+    color: theme('colors.ink-black');
+  }
+  
+  /* SVG Noise Overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .border-thick {
+    border: 3px solid theme('colors.ink-black');
+  }
+
+  /* Interaction classes */
+  .pressable {
+    transition: all 0.1s ease-in-out;
+  }
+  .pressable:active {
+    transform: translate(4px, 4px);
+    box-shadow: none !important;
+  }
+  
+  /* Masonry fallback */
+  .columns-2 {
+    column-count: 2;
+    column-gap: 1rem;
+  }
+  .break-inside-avoid {
+    break-inside: avoid;
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24 overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-background-light border-b-4 border-ink-black h-16 flex items-center justify-center shadow-hard mb-6">
+<h1 class="font-display font-bold text-2xl uppercase tracking-tighter text-ink-black">YOUR MESSY TRIPS</h1>
+</header>
+<!-- Main Content: Masonry Grid -->
+<main class="px-4 max-w-lg mx-auto w-full">
+<div class="columns-2 space-y-4">
+<!-- Trip Card 1 -->
+<article class="break-inside-avoid bg-surface-yellow border-thick shadow-hard pressable mb-4 relative rotate-[-1deg]">
+<div class="p-2 pb-0">
+<div class="border-2 border-ink-black overflow-hidden bg-white aspect-square relative">
+<img class="object-cover w-full h-full grayscale-[20%] contrast-125 sepia-[20%]" data-alt="A chaotic, blurry photo taken at night in a crowded neon-lit street in Cabo. The style is raw, highly saturated like a disposable camera with heavy flash. Bright pinks and deep blacks dominate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8fiqabi3I3z886FtHh2aaaVaMVgKkj0MgLXbHipZ2FHOuSCwRGDUwTyQ6pB3JqYsx8wBZOr_Msj_GvFK9Uhfft8sFF4Iwui6HiDz5OEuSL5qtpaAta6NjHP7T9T91QCxHanu6LwSP1EMIQkEDhjWAH1ndZtZD-k1EhguqhlXcWg2JqVKPrqnMNsIjfQoK0ZLZAuhlQEt6U3tUnQsISpQm11GuVTKmc1heY_3WDhX_141_Ox-JmoBjO55isYAy3zdr-Colz2fZwn8"/>
+<!-- Tape piece -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-4 bg-white/80 border border-gray-300 rotate-3 backdrop-blur-sm"></div>
+</div>
+</div>
+<div class="p-3">
+<h2 class="font-display font-bold text-sm uppercase leading-tight mb-2">Cabo Fail '23</h2>
+<!-- Avatars -->
+<div class="flex -space-x-2">
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Close up face of a laughing person in harsh flash lighting, polaroid style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq7EdCTPva73qwA0b7XoYyRoEyBXhGAw90E67gUzc0psJTDFanyVZs3kELGIGm_4vjezb5wLlMQMocryuJkkDRatqU5kQvwmCTg-whLJk3Q5Qh4BzcImyTZ4bxX-KAYh_xIBpNO8NYsdHnvkNDCoM5ECzF-GZk7AWbGz_pvX79MKljzYpXzfPiUi821FTgllT3Eq9eDcTpdC3px5WggNXfh5Hby8W8K1e9LLYMBRpPicZfj35Fb_Rsjzk4CUyamP1MJ30tuxdMt6Y"/>
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Close up face of a person wearing silly sunglasses, gritty film texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5LXLIM-C6xFwO5Yl67bYtVqeUHPZc5UppzkvbVVaNaR0UGgLOxlNokO863jd5j6bZ6jHbELY9810YFLNRk-t2SGo7FUlx3cR936i2BKI8RKT9GBTZoDxH4Xf0rtDXh7rfQXhvI1haL1zaH52GAmlWGMJRsv0zb241ItGftuwZjHdb5aP9TbR4EM5rN-dONwn5ti0RqZWAOJdcQ9I3jl3GouimdEvZxfzmCe-lqdy1kJpQ_i0Rs8ssvFQ__y_nDRcjYuWEaGxv5a0"/>
+<div class="w-6 h-6 rounded-full border-2 border-ink-black bg-cyan-accent flex items-center justify-center font-display text-[10px] font-bold">+2</div>
+</div>
+</div>
+</article>
+<!-- Trip Card 2 -->
+<article class="break-inside-avoid bg-white border-thick shadow-hard pressable mb-4 relative rotate-[2deg]">
+<div class="p-2 pb-0">
+<div class="border-2 border-ink-black overflow-hidden bg-gray-200 aspect-[3/4] relative">
+<img class="object-cover w-full h-full" data-alt="A wide shot of a broken tent in a muddy field during a music festival. Overcast lighting, gritty texture, high contrast black and white with a subtle green tint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc1O6C08mrvt95HE72xNmasi9USWsLzudZ6cJ4daYEzP00r8WZyGTGOswVy5Rp9NOQYdCSUUiEPWxlXt12mS04t5KpWceFiA3tsou2zx8WgajfsEoQLFFQ7gBifUslUPasmMiRVyGfl4AckykcHEIjcWD4KXEF6OZbVdeP37vb2tbvRysbSyZLe3zy4sXMcMBYxgihyzGBswCogeH3aDyclR0AGtWq1E9C7KwCf1dzoC7oNbd0oTDywqP-c6-BQF-_TsvL56eBePg"/>
+</div>
+</div>
+<div class="p-3">
+<h2 class="font-display font-bold text-sm uppercase leading-tight mb-2">Mudfest 2024</h2>
+<p class="font-hand text-primary text-sm mb-2 -rotate-2">Never again...</p>
+<div class="flex -space-x-2">
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Face covered in mud, smiling widely, grainy texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8uhCZVdeFadbMnrz0wJV-brI8gekrKOtzAtT-jXMrbwzoTEcm5i85_8b8XT9wZMYt-6b4Cw_lAO9MPdqsQ3cwvkbjRQH4hzBuFB68H6lWLUNL8Wd7BpVim-3WNiFntmqrrPw2rHTRl4C4CxZ_-E4JUrrgTLN_adicfzDsi_KotyZl4-RFBfuvb7Jm24RuDctc7jz_a7G_AKGWS-HuhEzyHmvKz5R8zGiiI1iEx92CUuUILv6i6YboM04tCyJ3fjvFw3AIAB-HrGw"/>
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Exhausted person looking at the camera, harsh flash" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU2_zmIFRpkgWusvXog_OeYiNfSq2E7F-mTgBQDSodDP0vEgCerFiVh6gd3cvq-N84urrif-UUq1mkMZUV4_A1PndsP8huReQvOedq3TCgLon5EZVKcPkk3y4mD_dd4734W7SqFM49a0HMUswKI04y4hwi0Fpw1R9Z2IvPE3RDoXFXn46i2mSCZ9uZOpkjKdngtudurEmy_0_bCSKxm9TV0_dYL9-GAvAmeVZRMi7U3FFtlvxWGlNpEdCShSh4KmtOPL6vJ9tIEFU"/>
+</div>
+</div>
+</article>
+<!-- Trip Card 3 -->
+<article class="break-inside-avoid bg-primary border-thick shadow-hard pressable mb-4 relative rotate-[-2deg] text-white">
+<div class="p-2 pb-0">
+<div class="border-2 border-ink-black overflow-hidden bg-black aspect-video relative">
+<img class="object-cover w-full h-full opacity-80 mix-blend-luminosity" data-alt="A glowing neon diner sign late at night, blurred motion of a car driving by. Cinematic, moody, vivid colors contrasting with deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzHiCujisdOlw0WKq1uRsTgRBI7Bla5tbL5tCLeiXv4PjEvhoa8Gphpzscsi-x9vRLdn_YoyrtRUxU2I5429zUug0ql1BlvuSbrhaN0vGIx5EIBu9lshCzSm0Z-jSJOCTc-uNprN6YUHjd2MxNa8URbJFsP8wE594vcUtCwk7LHvHYCTOtSNivNEnz14ecHC2RZ3PjgY_hG4t3TLKeOMA2PpbQcD13c3DrbAki8n2JW3w0mHyaeuampdYbAQbZRw3HPUnA-EmDoPw"/>
+</div>
+</div>
+<div class="p-3">
+<h2 class="font-display font-bold text-sm uppercase leading-tight mb-2 text-surface-yellow">Vegas Mistakes</h2>
+<div class="flex -space-x-2">
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-surface-yellow object-cover" data-alt="Person wearing a glowing party hat, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5_VCoHcnC1pLqMCyDVCqdL80braXgy_XDPAvqo1vPZzFWrf0oimhamj_541On7f3LvcP1fDoaDSH02AHKaWLu5ONF-u3Bwdi0lb6XmugL5xgACUWXEU3HMuc7qA6-Qunz-JKSrRJxboDK76UxKPRfulxHijcPJTlDlCJ6QeqhGccelZE1qZfQuNBRLVZZTelXauVNGsinMSa6Gb_mQ8SS8PkSGt9CUacivzeqY5qQLxJZIluwnzXunquaphS_iA5giN9cnQlVWv0"/>
+</div>
+</div>
+</article>
+<!-- Trip Card 4 -->
+<article class="break-inside-avoid bg-surface-yellow border-thick shadow-hard pressable mb-4 relative rotate-[1deg]">
+<div class="p-2 pb-0">
+<div class="border-2 border-ink-black overflow-hidden bg-white aspect-square relative">
+<img class="object-cover w-full h-full" data-alt="A chaotic pile of empty pizza boxes and soda cans on a motel floor. Grungy, high flash, disposable camera aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg4EL78LnsYim1e5WkEBdzrj5BYFmyGTcTAttZCyyCXpya9F5BG1lA1jjLapZ-p4r4t8KI7lzb8SWGhVTDxEWbceYSeaYBqa0dyaan99fWy1NXXPC8rt_tw_-VpHz5syTQlJfIW5n4mAHV_rqear_-gVqwSgLlAnRD0A03gT-dJDTy8h2-duxFnTWcLIh6PrblLa7ehWdrR1HzQHTOkiKm3rSuzGL-2Mf7VCirqX-kATvRQl2CSeMdaokhtejeM-j9NmXmk70ES8g"/>
+</div>
+</div>
+<div class="p-3">
+<h2 class="font-display font-bold text-sm uppercase leading-tight mb-2">Roadtrip '22</h2>
+<div class="flex -space-x-2">
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Person sleeping awkwardly in a car seat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5oayLuAuT-Jf8shcPbxOV0xGBf27cwpZVyFMJLCHGwGYNBp1-_V8Nyy_w1xGse8q0QauAG_uEL9uTT7FpyKWah6CQvZrBqEDrDyQqk8tkfVJb4XMN3I-7gkSGwy9_Cqz5t67P9ecpKVHnNPPpAR1AnIqfNv7e5hhi9Vm3hfKBNnewGKxbfksA-AricqPLxW8TqVOwiU8wUGV0BK1vU2ciA1TBZ2qtIg8r6EOj8S2wmNCxcDeVpbJGtMam3X2uHhL1QcXlDoTDtcs"/>
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Person holding a huge coffee cup, looking tired" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCp5yQe-WSHgb-VV-LU-_Bi8lOk9kPjwRsXpPLgAuye71CoV0qktKJl6mMVEljAKwAaSDccpL6-IDxNw9RC1aBajcsMXbAKEBxHXKAsgsPEz6f5Dlwxixk6fmN6gngiUkqqafauyoqTI6fqvXvte4i9EugxgwpDjVJMSVigfpkEEkyO-mCtE71ne4QUL1VdvbZ7_QOO-6-IWmyw7n83QYcwfAoyZYTTTfkYITI-Lu293g66d7knlhprRXXVJc8Ncskk34mCS0YrvA"/>
+<img alt="User" class="w-6 h-6 rounded-full border-2 border-ink-black object-cover" data-alt="Person laughing out window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI53uuah8dIm4ygtMgHVSURuRqY8f496Lo_brU0Uq3_la6tX7AfZw1I7ThiSJvFtKZrfqLytWNDs9GlP1xGe5niDuccjaI32SkZ2-91LuchjJ__mdsdjonfRcOkB8bCFQk_bV0eYtgAGBsq1UU6F63Pof2WyUOWBKb-_pjRw1XotQX7YsRJl32w5xcf21H6qyAskjV7I6eJqQHWQlMiliI0b_8U9re_WpmvT02zimH0RwZcZ5GMdPoXZ_bauzTwzqPIF27uzXYSpY"/>
+</div>
+</div>
+</article>
+</div>
+<!-- Empty State (Hidden by default, uncomment to view) -->
+<!--
+    <div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+      <div class="w-32 h-32 mb-6 border-thick bg-surface-yellow shadow-hard flex items-center justify-center rotate-3">
+        <span class="material-symbols-outlined text-6xl text-ink-black" style="font-variation-settings: 'FILL' 1;">delete</span>
+      </div>
+      <h2 class="font-display font-bold text-xl uppercase mb-2">NO TRIPS YET.</h2>
+      <p class="font-body font-bold text-lg bg-primary text-white px-2 py-1 -rotate-2 inline-block">GO OUTSIDE.</p>
+    </div>
+    -->
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-20 h-20 bg-surface-yellow border-thick rounded-full shadow-hard pressable flex flex-col items-center justify-center z-50">
+<span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">add</span>
+<span class="font-display font-bold text-[10px] leading-none uppercase mt-1">Chaos</span>
+</button>
+<!-- Shared Bottom Nav -->
+<div class="fixed bottom-0 left-0 w-full z-50">
+<div class="flex gap-2 border-t-4 border-ink-black bg-background-light px-4 pb-3 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-ink-black" href="#">
+<div class="text-ink-black flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="book" style="font-variation-settings: 'FILL' 1;">book</span>
+</div>
+<p class="text-ink-black font-display text-xs font-bold uppercase leading-normal tracking-[0.015em]">Scrapbook</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-graphite hover:text-ink-black transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="play_circle">play_circle</span>
+</div>
+<p class="font-display text-xs font-bold uppercase leading-normal tracking-[0.015em]">Studio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-graphite hover:text-ink-black transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="person">person</span>
+</div>
+<p class="font-display text-xs font-bold uppercase leading-normal tracking-[0.015em]">Profile</p>
+</a>
+</div>
+</div>
+</body></html>

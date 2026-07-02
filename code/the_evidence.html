@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Evidence - The Inside Joke</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#f20d80",
+          "background-light": "#F9F8F6",
+          "background-dark": "#221019",
+          "surface-yellow": "#FFFF00",
+          "ink-black": "#111111",
+          "muted-graphite": "#888888",
+          "accent-cyan": "#00E5FF",
+        },
+        fontFamily: {
+          "display": ["Space Mono", "monospace"],
+          "body": ["Courier Prime", "monospace"],
+          "hand": ["Caveat", "cursive"]
+        },
+        borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem", "none": "0px"},
+        boxShadow: {
+          'hard': '4px 4px 0px 0px #111111',
+          'hard-hover': '0px 0px 0px 0px #111111',
+        }
+      },
+    },
+  }
+</script>
+<style>
+  body {
+    background-color: #F9F8F6;
+    color: #111111;
+    overflow-x: hidden;
+  }
+  
+  /* SVG Grain overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .border-thick {
+    border: 3px solid #111111;
+  }
+
+  /* Custom scrollbar for timeline */
+  .timeline-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  .timeline-scroll::-webkit-scrollbar-track {
+    background: #F9F8F6;
+    border-left: 2px solid #111111;
+  }
+  .timeline-scroll::-webkit-scrollbar-thumb {
+    background: #111111;
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body text-ink-black flex flex-col h-[884px] w-full max-w-md mx-auto relative border-x border-ink-black shadow-2xl bg-background-light">
+<!-- Shared TopAppBar -->
+<div class="relative flex h-auto w-full flex-col bg-white group/design-root overflow-x-hidden border-b-[3px] border-ink-black z-20 shrink-0" style='font-family: "Space Mono", "Noto Sans", sans-serif;'>
+<div class="flex items-center bg-white p-4 pb-2 justify-between">
+<button aria-label="Go back" class="text-[#181114] flex size-12 shrink-0 items-center hover:bg-gray-100 transition-colors" data-icon="ArrowLeft" data-size="24px" data-weight="regular">
+<span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
+</button>
+<h2 class="text-[#181114] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12 uppercase">THE EVIDENCE</h2>
+</div>
+</div>
+<!-- Main Split View Container -->
+<div class="flex flex-col h-full overflow-hidden">
+<!-- Map Section (Top 40%) -->
+<div class="h-[353px] relative border-b-[3px] border-ink-black z-10 shrink-0 bg-gray-300 overflow-hidden group">
+<!-- Map Image Placeholder with Grayscale Filter -->
+<div class="absolute inset-0 bg-cover bg-center grayscale contrast-125 brightness-90" data-alt="A gritty, high-contrast black and white street map of a chaotic urban downtown area, showing winding streets and building footprints. The style is reminiscent of a photocopied zine map, slightly distorted with heavy grain." data-location="Tokyo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMHms3J94ZNjT47OBSVc9ASGToglMRsH4M7TugUYqZNLagdBdlXG1KkQElo-6WnvGjhEXccwWMfKlx0M3_H6tRGBmy79-ZmOSo27xJ5rrxDcID3eLSg5UuvwpTGwqDAsqWyIkgNckmm9DrKkjKi5V4Yt9S0G82nqo6IzhOScueF3PBzxCwRsaYhaj__lUaUtz_kCywpGJMPa_lIGe_qOHmc45eg0eUMTV3tJ2h_iMT8wc-vIZCMvk-V1-iymfJ0QjChcHhumJRg3w')"></div>
+<!-- Map Pins (Interactive) -->
+<button class="absolute top-[30%] left-[20%] transform -translate-x-1/2 -translate-y-full flex flex-col items-center group/pin hover:scale-110 transition-transform cursor-pointer z-10" onclick="scrollToMemory('mem-1')">
+<div class="bg-primary text-white font-display text-xs px-2 py-1 border-thick shadow-hard rotate-[-3deg] whitespace-nowrap mb-1">THE INCIDENT</div>
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[2px_2px_0px_rgba(17,17,17,1)]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</button>
+<button class="absolute top-[60%] left-[70%] transform -translate-x-1/2 -translate-y-full flex flex-col items-center group/pin hover:scale-110 transition-transform cursor-pointer z-10" onclick="scrollToMemory('mem-2')">
+<div class="bg-primary text-white font-display text-xs px-2 py-1 border-thick shadow-hard rotate-[4deg] whitespace-nowrap mb-1">BAD IDEA #4</div>
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[2px_2px_0px_rgba(17,17,17,1)]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</button>
+<!-- Overlay Noise specific to map to blend better -->
+<div class="absolute inset-0 bg-black/10 pointer-events-none mix-blend-overlay"></div>
+</div>
+<!-- Timeline Section (Bottom 60%) -->
+<div class="h-[530px] overflow-y-auto timeline-scroll bg-background-light relative pt-6 pb-32 px-4 flex-1">
+<!-- Vertical Timeline Track -->
+<div class="absolute left-8 top-0 bottom-0 w-[4px] bg-ink-black z-0 border-r border-white/50"></div>
+<!-- Timeline Nodes -->
+<div class="flex flex-col gap-10 relative z-10">
+<!-- Memory 1 -->
+<div class="flex gap-4 items-start relative group scroll-mt-6 transition-all duration-300" id="mem-1">
+<!-- Node Marker -->
+<div class="w-8 h-8 rounded-full bg-surface-yellow border-thick shadow-hard flex items-center justify-center shrink-0 z-10 mt-4 -ml-[14px]">
+<span class="material-symbols-outlined text-ink-black text-sm font-bold">bolt</span>
+</div>
+<!-- Memory Content Card -->
+<div class="flex-1 bg-white border-thick shadow-hard p-3 transform rotate-[-2deg] hover:rotate-0 hover:translate-y-[4px] hover:translate-x-[4px] hover:shadow-hard-hover transition-all duration-200 cursor-pointer">
+<div class="flex justify-between items-center mb-2 border-b-2 border-ink-black pb-1 border-dashed">
+<span class="font-display font-bold text-xs uppercase bg-ink-black text-white px-1">11:42 PM</span>
+<span class="font-hand text-primary text-lg leading-none font-bold">@alex</span>
+</div>
+<img class="w-full aspect-[4/3] object-cover border-2 border-ink-black mb-3 filter contrast-125 saturate-150 grayscale-[0.2]" data-alt="A wildly blurry, flash-lit polaroid-style photo of a dropped ice cream cone on a dirty sidewalk at night. High contrast, gritty texture, neon pink light reflecting off a puddle nearby." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqb6LbvBrW4Ue7MDpYvmzbpa3X5fcuFWPtqqrdKEiPjauXeqmVkyr1FoK2oQ86wIllp4eCLovXTDALySIyfTpuZsJKZIffX3GI4Wc4TVJgzAzWHsgNsxwMe0EDW12vTKwjH7Yo4x8epfn-t-uF4ABXKVfuhM5rJfJlCtfFIEhuWowtu075ufdeINuDczymoFN2gb7MNlwvSI5oSPkGiqsrI2KtTxhp16JhKwgBpo32ItQuvg_DLFOLCd8W8UsZtYnNhDrM9QUFG3k"/>
+<p class="font-body text-sm leading-tight font-bold bg-surface-yellow inline-block px-1 mb-2">FAIL</p>
+<p class="font-body text-sm leading-snug">Alex tried to fight a seagull for the last churro. The seagull won. We are never returning to this pier.</p>
+</div>
+</div>
+<!-- Memory 2 -->
+<div class="flex gap-4 items-start relative group scroll-mt-6 transition-all duration-300" id="mem-2">
+<div class="w-8 h-8 rounded-full bg-primary border-thick shadow-hard flex items-center justify-center shrink-0 z-10 mt-4 -ml-[14px]">
+<span class="material-symbols-outlined text-white text-sm font-bold">local_fire_department</span>
+</div>
+<div class="flex-1 bg-white border-thick shadow-hard p-3 transform rotate-[3deg] hover:rotate-0 hover:translate-y-[4px] hover:translate-x-[4px] hover:shadow-hard-hover transition-all duration-200 cursor-pointer">
+<div class="flex justify-between items-center mb-2 border-b-2 border-ink-black pb-1 border-dashed">
+<span class="font-display font-bold text-xs uppercase bg-ink-black text-white px-1">02:15 AM</span>
+<span class="font-hand text-primary text-lg leading-none font-bold">@sarah</span>
+</div>
+<div class="bg-ink-black p-4 text-white font-display text-lg uppercase leading-tight mb-3 transform -skew-x-6">
+            "I know a shortcut through the alley." <br/>
+<span class="text-primary text-sm">- Famous last words</span>
+</div>
+<p class="font-body text-sm leading-snug">Ended up at a 24hr laundromat playing poker with candy wrappers.</p>
+</div>
+</div>
+<!-- Memory 3 -->
+<div class="flex gap-4 items-start relative group scroll-mt-6 transition-all duration-300" id="mem-3">
+<div class="w-8 h-8 rounded-full bg-surface-yellow border-thick shadow-hard flex items-center justify-center shrink-0 z-10 mt-4 -ml-[14px]">
+<span class="material-symbols-outlined text-ink-black text-sm font-bold">music_note</span>
+</div>
+<div class="flex-1 bg-white border-thick shadow-hard p-3 transform rotate-[-1deg] hover:rotate-0 hover:translate-y-[4px] hover:translate-x-[4px] hover:shadow-hard-hover transition-all duration-200 cursor-pointer">
+<div class="flex justify-between items-center mb-2 border-b-2 border-ink-black pb-1 border-dashed">
+<span class="font-display font-bold text-xs uppercase bg-ink-black text-white px-1">04:00 AM</span>
+<span class="font-hand text-primary text-lg leading-none font-bold">@group</span>
+</div>
+<img class="w-full aspect-square object-cover border-2 border-ink-black mb-3 sepia-[0.3]" data-alt="A chaotic, wide-angle fisheye lens photo of three friends screaming lyrics in a tiny, cramped karaoke booth lit entirely by harsh magenta and cyan neon lights. Grainy, loud, energetic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa9qiUmdAn3I64gl8K4ttDZttAwinQPlReLQZWN9kOMrbJVmCHh3RgR-xZU-4fr8CvUS5rD-ql8B8PB5XsPNnvYyZ0v00_KrlexLnLexSB_PqIX9f-lAE3tIeMZ5ijH95a1ALJfNJs-U9uEF6_kifH_8ISG6yah6Weuq6w1FO0TjnjW4VjGyIuTvrzvK6oVBs89ft5wtKJ4Cpx_SnJ4am_Tpb7T04QTErssDV2CC1yErbuA8DzUUFDrPuAefpcL8fRWO70WCXwDtM"/>
+<p class="font-body text-sm leading-snug">Karaoke meltdown. We owe the owner an apology for destroying 'Mr. Brightside'.</p>
+</div>
+</div>
+</div>
+<!-- End of timeline marker -->
+<div class="mt-8 flex justify-center pl-6">
+<span class="font-display text-sm font-bold text-muted-graphite uppercase tracking-widest">--- END OF TAPE ---</span>
+</div>
+</div>
+<!-- Floating Sticky CTA Banner -->
+<div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-sm z-50">
+<button class="w-full bg-primary text-white font-display font-bold text-xl py-4 border-thick shadow-hard transform hover:translate-y-[4px] hover:translate-x-[4px] hover:shadow-hard-hover transition-all duration-150 uppercase tracking-wider flex items-center justify-center gap-2 active:bg-ink-black">
+<span class="material-symbols-outlined text-3xl font-bold" style="font-variation-settings: 'FILL' 1;">add_box</span>
+      ADD THE TEA
+    </button>
+</div>
+</div>
+<script>
+  function scrollToMemory(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      // Add a quick highlight flash class
+      el.classList.add('bg-surface-yellow', 'scale-105');
+      setTimeout(() => el.classList.remove('bg-surface-yellow', 'scale-105'), 600);
+      
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+</script>
+</body></html>

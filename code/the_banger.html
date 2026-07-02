@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Banger (AI Studio) - The Inside Joke</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f20d80",
+              "background-light": "#f8f5f7",
+              "background-dark": "#221019",
+              "brand-yellow": "#FFFF00",
+              "brand-magenta": "#FF007F",
+              "brand-cyan": "#00E5FF",
+              "brand-black": "#111111",
+              "brand-bg": "#F9F8F6",
+              "brand-muted": "#888888"
+            },
+            fontFamily: {
+              "display": ["Space Mono", "monospace"],
+              "body": ["Courier Prime", "monospace"],
+              "hand": ["Caveat", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            boxShadow: {
+              'brutal': '4px 4px 0px 0px #111111',
+              'brutal-sm': '2px 2px 0px 0px #111111',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: var(--color-background);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            color: #111111;
+        }
+        
+        .border-thick {
+            border: 3px solid #111111;
+        }
+
+        .shadow-hard {
+            box-shadow: 4px 4px 0px 0px #111111;
+        }
+        
+        .shadow-hard:active {
+            box-shadow: 0px 0px 0px 0px #111111;
+            transform: translate(4px, 4px);
+        }
+
+        .dymo-label {
+            background-color: #111111;
+            color: white;
+            text-transform: uppercase;
+            font-family: 'Space Mono', monospace;
+            padding: 4px 8px;
+            letter-spacing: 1px;
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.3), inset -1px -1px 2px rgba(0,0,0,0.8);
+        }
+
+        .spin-slow {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .karaoke-active {
+            color: #111111;
+            text-shadow: 2px 2px 0px #FFFF00, -2px -2px 0px #FFFF00, 2px -2px 0px #FFFF00, -2px 2px 0px #FFFF00;
+        }
+
+        /* Tape texture overlay */
+        .tape-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body min-h-screen flex flex-col relative pb-20">
+<!-- Header (Minimal for focused view) -->
+<header class="p-4 flex items-center justify-between border-b-4 border-brand-black bg-brand-bg sticky top-0 z-50">
+<button class="w-10 h-10 border-thick bg-white flex items-center justify-center shadow-hard" onclick="alert('Back to Typewriter')">
+<span class="material-symbols-outlined font-bold">arrow_back</span>
+</button>
+<h1 class="font-display font-bold text-2xl uppercase tracking-tighter">THE STUDIO</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="flex-1 p-4 max-w-md mx-auto w-full flex flex-col gap-6">
+<!-- Setup State -->
+<section class="flex flex-col gap-6" id="setup-state">
+<!-- Genre Select (Dymo Style) -->
+<div class="flex flex-col gap-2">
+<label class="font-display font-bold uppercase text-sm">Select Vibe:</label>
+<div class="relative">
+<select class="w-full appearance-none bg-brand-black text-white font-display font-bold uppercase p-4 border-thick outline-none dymo-label shadow-hard rounded-none text-lg">
+<option>Pop-Punk (2000s)</option>
+<option>Euro-Trash Synth</option>
+<option>Sad Boy Indie</option>
+<option>Chaotic Rap</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+<span class="material-symbols-outlined">stat_minus_1</span>
+</div>
+</div>
+</div>
+<!-- Tape Deck / Cassette Graphic -->
+<div class="w-full aspect-[3/2] border-thick bg-gray-200 relative overflow-hidden flex items-center justify-center shadow-hard mt-4 bg-white">
+<div class="w-3/4 h-3/4 border-4 border-brand-black rounded-lg relative bg-gray-100 flex items-center justify-between px-8">
+<!-- Spools -->
+<div class="w-16 h-16 rounded-full border-4 border-brand-black flex items-center justify-center relative">
+<div class="w-2 h-2 bg-brand-black rounded-full"></div>
+<div class="absolute inset-2 border-2 border-dashed border-gray-400 rounded-full"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-12 bg-white border-4 border-brand-black z-10 flex items-center justify-center">
+<div class="w-16 h-4 bg-brand-black rounded-full opacity-20"></div>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-brand-black flex items-center justify-center relative">
+<div class="w-2 h-2 bg-brand-black rounded-full"></div>
+<div class="absolute inset-6 bg-brand-black rounded-full opacity-50"></div>
+</div>
+</div>
+<!-- Label -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-thick transform -rotate-2">
+<span class="font-hand text-xl font-bold">Cabo Fail '23</span>
+</div>
+<div class="tape-overlay"></div>
+</div>
+<!-- Record Button -->
+<button class="w-full bg-brand-yellow border-thick shadow-hard py-6 mt-8 relative group overflow-hidden transition-transform" id="btn-record">
+<div class="absolute inset-0 bg-brand-magenta translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+<span class="relative z-10 font-display font-bold text-3xl uppercase flex items-center justify-center gap-3 group-hover:text-white">
+<span class="material-symbols-outlined text-4xl" data-weight="fill">radio_button_checked</span>
+                    PRESS RECORD
+                </span>
+</button>
+</section>
+<!-- Generating State (Hidden by default) -->
+<section class="hidden flex-col items-center justify-center gap-8 py-12" id="generating-state">
+<h2 class="font-display font-bold text-2xl uppercase animate-pulse text-center">Cooking the beat...</h2>
+<div class="w-full h-32 border-thick bg-white p-4 relative overflow-hidden shadow-hard flex items-end gap-1">
+<!-- Fake waveform generated by JS -->
+<div class="w-full h-full flex items-end gap-[2px]" id="waveform-container"></div>
+<!-- Progress overlay -->
+<div class="absolute left-0 top-0 bottom-0 w-1/3 bg-brand-magenta mix-blend-multiply opacity-50 animate-[slideRight_10s_linear_infinite]"></div>
+</div>
+<p class="font-body text-brand-muted text-center animate-bounce mt-4">Synthesizing vocals...</p>
+</section>
+<!-- Playback State (Hidden by default) -->
+<section class="hidden flex-col h-full gap-6" id="playback-state">
+<!-- Vinyl Player Area -->
+<div class="relative w-full aspect-square border-thick bg-brand-black p-4 shadow-hard overflow-hidden flex items-center justify-center">
+<!-- Tone Arm -->
+<div class="absolute top-4 right-4 w-4 h-32 bg-gray-300 border-2 border-brand-black rounded-full origin-top-right transform rotate-12 z-20 shadow-lg">
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-12 bg-gray-400 border-2 border-brand-black -translate-y-2 rounded-sm"></div>
+</div>
+<!-- Record -->
+<div class="w-[90%] h-[90%] bg-[#1a1a1a] rounded-full border-4 border-[#333] shadow-inner relative flex items-center justify-center spin-slow">
+<!-- Grooves -->
+<div class="absolute inset-[10%] rounded-full border border-[#2a2a2a]"></div>
+<div class="absolute inset-[20%] rounded-full border border-[#2a2a2a]"></div>
+<div class="absolute inset-[30%] rounded-full border border-[#2a2a2a]"></div>
+<!-- Label with trip image -->
+<div class="w-1/3 h-1/3 rounded-full border-4 border-brand-black overflow-hidden relative bg-brand-magenta">
+<img class="w-full h-full object-cover opacity-80 mix-blend-luminosity" data-alt="A chaotic blurry photo of a group of friends laughing at a messy dinner table on vacation, vibrant lighting, highly detailed, disposable camera flash aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClrsy9bpJ_dZjzLwUERdlOOT_9RIMz2AGSf5vn3mat7Hcqoc1Uw_DiFJl__JQrsIWZ7u_nEXa8iSGP1H4AYiO9obrwZtJcxoejz3COVRQQAy3s0JG4bFfvWW0k9TDLOrjrMRRBQB4eRjpmetKLS3z0MRUQt1Sv9rjSj864kGbTxHiyPwYmoNcRMPWQNNrksuj8RLE69I9tfcY3SIHbfO0-la0CcBoTn3c4Y4fFMT-cifzggD0dQsfqe1AibKVNylGLLJ9nZXBDE0M"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-4 h-4 bg-brand-bg rounded-full border-2 border-brand-black"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Karaoke Lyrics Area -->
+<div class="flex-1 min-h-[200px] border-thick bg-white shadow-hard p-6 relative overflow-hidden flex flex-col justify-center">
+<div class="absolute top-2 left-2 dymo-label text-xs">NOW PLAYING</div>
+<div class="font-display font-bold text-3xl uppercase leading-tight flex flex-col gap-4 text-brand-muted text-center" id="lyric-scroller">
+<div class="karaoke-active transition-all duration-300 transform scale-110">Left my passport in the Uber</div>
+<div class="transition-all duration-300">Now I'm crying by the pool</div>
+<div class="transition-all duration-300 opacity-50">Sunburn looking like a lobster</div>
+</div>
+</div>
+<!-- Controls & Share -->
+<div class="flex gap-4">
+<button class="w-16 h-16 bg-white border-thick shadow-hard flex items-center justify-center active:shadow-none active:translate-y-1 active:translate-x-1">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">pause</span>
+</button>
+<button class="flex-1 bg-brand-cyan border-thick shadow-hard flex items-center justify-center gap-2 font-display font-bold text-xl uppercase active:shadow-none active:translate-y-1 active:translate-x-1">
+<span class="material-symbols-outlined">share</span>
+                    SHARE TO STORY
+                </button>
+</div>
+</section>
+</main>
+<script>
+        // Simple state machine for demonstration
+        const btnRecord = document.getElementById('btn-record');
+        const setupState = document.getElementById('setup-state');
+        const generatingState = document.getElementById('generating-state');
+        const playbackState = document.getElementById('playback-state');
+        const waveformContainer = document.getElementById('waveform-container');
+
+        // Generate fake waveform bars
+        for(let i=0; i<40; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'flex-1 bg-brand-black';
+            bar.style.height = `${Math.random() * 80 + 10}%`;
+            waveformContainer.appendChild(bar);
+        }
+
+        btnRecord.addEventListener('click', () => {
+            setupState.classList.add('hidden');
+            generatingState.classList.remove('hidden');
+            generatingState.classList.add('flex');
+
+            // Simulate generation time
+            setTimeout(() => {
+                generatingState.classList.add('hidden');
+                generatingState.classList.remove('flex');
+                playbackState.classList.remove('hidden');
+                playbackState.classList.add('flex');
+            }, 3000);
+        });
+
+        // Simple lyric scroll simulation
+        const lyrics = document.querySelectorAll('#lyric-scroller div');
+        let currentLyric = 0;
+        
+        setInterval(() => {
+            if(playbackState.classList.contains('hidden')) return;
+            
+            lyrics.forEach(l => {
+                l.classList.remove('karaoke-active', 'scale-110');
+                l.classList.add('opacity-50');
+            });
+            
+            lyrics[currentLyric].classList.add('karaoke-active', 'scale-110');
+            lyrics[currentLyric].classList.remove('opacity-50');
+            
+            // Just toggle between the 3 for demo
+            currentLyric = (currentLyric + 1) % lyrics.length;
+            
+        }, 2000);
+    </script>
+</body></html>

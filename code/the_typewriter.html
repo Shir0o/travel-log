@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Typewriter - The Inside Joke</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF007F",
+              "background-light": "#F9F8F6",
+              "background-dark": "#221019",
+              "surface": "#FFFF00",
+              "text-main": "#111111",
+              "muted": "#888888",
+              "accent": "#00E5FF"
+            },
+            fontFamily: {
+              "display": ["Space Mono", "monospace"],
+              "body": ["Courier Prime", "monospace"],
+              "hand": ["Caveat", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px", "sm": "0px"},
+            boxShadow: {
+              'hard': '4px 4px 0px 0px #111111',
+              'hard-sm': '2px 2px 0px 0px #111111',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: var(--color-background-light, #F9F8F6);
+            color: var(--color-text-main, #111111);
+            position: relative;
+        }
+        /* Grain Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .border-thick {
+            border: 3px solid #111111;
+        }
+        
+        .typewriter-text {
+            overflow: hidden;
+            border-right: .15em solid #FF007F;
+            white-space: pre-wrap;
+            margin: 0 auto;
+            letter-spacing: normal;
+            animation: 
+                typing 2s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { max-width: 0 }
+            to { max-width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF007F; }
+        }
+        
+        .draggable-block:hover {
+            border: 3px dashed #FF007F;
+            background-color: rgba(255, 255, 0, 0.1);
+        }
+        .draggable-block:hover .drag-handle {
+            opacity: 1;
+        }
+        
+        .suck-animation {
+            animation: suckIn 0.5s forwards ease-in;
+        }
+        @keyframes suckIn {
+            0% { transform: scale(1) translate(0, 0); opacity: 1; }
+            100% { transform: scale(0.1) translate(100px, -200px); opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-white">
+<!-- Top Navigation (Custom for Focused View) -->
+<div class="sticky top-0 z-40 bg-background-light border-b-4 border-text-main py-3 px-4 flex justify-between items-center shadow-hard-sm">
+<button aria-label="Go back" class="w-10 h-10 border-thick bg-surface flex items-center justify-center hover:-translate-y-1 hover:shadow-hard transition-all focus:outline-none">
+<span class="material-symbols-outlined font-bold text-xl">arrow_back</span>
+</button>
+<div class="flex-1 text-center font-display font-bold text-xl uppercase tracking-tighter mx-4 truncate">
+            Cabo Fail '23
+        </div>
+<div class="flex items-center -space-x-3">
+<!-- Avatar 1 -->
+<div class="w-10 h-10 rounded-full border-thick bg-accent overflow-hidden z-20 relative">
+<img alt="User 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaaTO7cLQFBrDukdQJfD3l7ZU6uEhLr7qQH9TyLcgNYThOs7L1vEfkg_UAYeznV4j9-TuRPuvNdEm-a8SRMfXKCouP4ktiKDDcSteE25_lXzgpKSK0ap500-fE4wOvwsjR7sPnnTbkc8-tlghvXVCjAwh9uMVjsdJcQmmUEBEgJ4mCl_lEt72jI-lgpitIkQzLHQq5irnwgSJ6lEpt1JUXp2CthNbiGI6ugpLlX-u9WonwX_UkMZN7MP8RJtCYp6KiE0phyGVbuwU"/>
+</div>
+<!-- Avatar 2 -->
+<div class="w-10 h-10 rounded-full border-thick bg-primary overflow-hidden z-10 relative">
+<img alt="User 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCghbkiryWQhllkb3HHw0EoxcfB-7EWQiMknmg3PbaUm3ONhic0-gmWdSo2UQ3b8NfhOisBharEcLXY9w9S97Cuj6Jz5rKfksZt8Le-HpOx37FOZ01gG19h-t8NKuFmSNP1hFg3edNKBbxCte9n-tsdM_WFVLJDZphFIKEwwXFoID0NQYcjVs2_2CiPpVd-R8HmnxRO78nrdnj_VkgBn5t0sSpNjBcM8feOz4HqV5jMZuTJ1zVFzoBZ_iAqnajoZXvMNtqBRSScElo"/>
+</div>
+</div>
+</div>
+<!-- Main Canvas -->
+<main class="flex-1 p-4 pb-32 flex flex-col gap-6 max-w-2xl mx-auto w-full relative z-10">
+<!-- Toolbar -->
+<div class="flex gap-2 justify-center font-display text-sm sticky top-[72px] z-30 bg-background-light/90 backdrop-blur py-2 border-b-2 border-text-main/20">
+<button class="px-3 py-1 border-thick bg-white hover:bg-surface transition-colors">[B]</button>
+<button class="px-3 py-1 border-thick bg-white hover:bg-surface transition-colors">[I]</button>
+<button class="px-3 py-1 border-thick bg-white hover:bg-surface transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">format_list_bulleted</span></button>
+</div>
+<!-- Editor Area -->
+<div class="flex flex-col gap-6 relative mt-4">
+<!-- Lyric Block 1 -->
+<div class="draggable-block border-2 border-transparent p-4 transition-all relative group cursor-text">
+<div class="drag-handle opacity-0 absolute -left-2 top-1/2 -translate-y-1/2 cursor-grab text-muted transition-opacity">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="font-display text-muted text-xs mb-2 font-bold">[VERSE 1]</div>
+<p class="text-lg leading-relaxed outline-none" contenteditable="true">
+                    Packed my bags, forgot my passport<br/>
+                    Dave threw up on the airport transport<br/>
+                    Tequila shots before the plane took flight<br/>
+                    Someone started a random fight
+                </p>
+<!-- Collaborative Cursor -->
+<div class="absolute bottom-4 right-10 flex items-center pointer-events-none">
+<div class="w-1 h-5 bg-accent animate-pulse"></div>
+<div class="bg-accent text-text-main font-display text-[10px] font-bold px-1 py-0.5 ml-1 border-2 border-text-main">Dave</div>
+</div>
+</div>
+<!-- Lyric Block 2 (Generating State) -->
+<div class="draggable-block border-2 border-transparent p-4 transition-all relative">
+<div class="drag-handle opacity-0 absolute -left-2 top-1/2 -translate-y-1/2 cursor-grab text-muted transition-opacity">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="font-display text-primary text-xs mb-2 font-bold animate-pulse">[CHORUS - GENERATING...]</div>
+<p class="text-lg leading-relaxed outline-none typewriter-text" contenteditable="true">
+Oh Cabo, you absolute disaster
+Spinning out, losing control much faster
+Sunburns, lost phones, and a broken toe
+Best worst trip we'll ever know!
+                </p>
+<!-- Collaborative Cursor -->
+<div class="absolute top-10 left-1/2 flex items-center pointer-events-none">
+<div class="w-1 h-5 bg-primary animate-pulse"></div>
+<div class="bg-primary text-white font-display text-[10px] font-bold px-1 py-0.5 ml-1 border-2 border-text-main">AI Magic</div>
+</div>
+</div>
+<!-- Lyric Block 3 (Empty) -->
+<div class="draggable-block border-2 border-transparent p-4 transition-all relative group cursor-text">
+<div class="drag-handle opacity-0 absolute -left-2 top-1/2 -translate-y-1/2 cursor-grab text-muted transition-opacity">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="font-display text-muted text-xs mb-2 font-bold">[VERSE 2]</div>
+<p class="text-lg leading-relaxed outline-none text-muted italic" contenteditable="true">
+                    Type here or generate...
+                </p>
+</div>
+</div>
+<!-- Decorative elements mimicking raw notes -->
+<div class="absolute right-0 top-1/3 w-32 rotate-6 opacity-30 pointer-events-none hidden md:block">
+<div class="bg-surface border-thick p-2 font-hand text-xl shadow-hard">
+                "I lost my shoe in the ocean!" - Sarah
+            </div>
+</div>
+<div class="absolute left-0 top-2/3 w-28 -rotate-12 opacity-30 pointer-events-none hidden md:block">
+<div class="bg-white border-thick p-2 font-hand text-lg shadow-hard">
+                Pin: The sketchy taco stand
+            </div>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-background-light border-t-4 border-text-main p-4 z-50 shadow-[0_-4px_0_0_#111111]">
+<div class="max-w-2xl mx-auto flex flex-col gap-3">
+<!-- Raw note hint sucking in -->
+<div class="absolute -top-12 left-4 bg-white border-thick px-3 py-1 font-hand text-sm shadow-hard -rotate-3 transition-all duration-500 z-40 flex items-center gap-2" id="rawNote">
+<span class="material-symbols-outlined text-[16px]">sticky_note_2</span>
+                Dave dropped his taco
+            </div>
+<button class="w-full bg-primary text-white font-display font-bold text-lg py-4 border-thick shadow-hard hover:translate-y-1 hover:shadow-hard-sm active:translate-y-2 active:shadow-none transition-all uppercase flex items-center justify-center gap-2 relative overflow-hidden group" id="generateBtn">
+<span class="material-symbols-outlined group-hover:animate-spin">auto_awesome</span>
+                Generate Verse
+                <!-- Glitch effect pseudo-element -->
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+<button class="w-full bg-surface text-text-main font-display font-bold text-sm py-3 border-thick shadow-hard hover:translate-y-1 hover:shadow-hard-sm active:translate-y-2 active:shadow-none transition-all uppercase flex items-center justify-center gap-2">
+                Produce Track
+                <span class="material-symbols-outlined">album</span>
+</button>
+</div>
+</div>
+<script>
+        // Simple interaction for the "Generate" button to show the 'suck in' animation
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const note = document.getElementById('rawNote');
+            note.classList.add('suck-animation');
+            
+            // Reset for demo purposes
+            setTimeout(() => {
+                note.classList.remove('suck-animation');
+            }, 1000);
+        });
+    </script>
+</body></html>
