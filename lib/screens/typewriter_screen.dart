@@ -7,11 +7,17 @@ import '../widgets/brutal_widgets.dart';
 class TypewriterScreen extends StatefulWidget {
   final VoidCallback onBack;
   final VoidCallback onProduceTrack;
+  final String tripName;
+  final String initialLyrics;
+  final ValueChanged<String> onLyricsUpdated;
 
   const TypewriterScreen({
     Key? key,
     required this.onBack,
     required this.onProduceTrack,
+    required this.tripName,
+    required this.initialLyrics,
+    required this.onLyricsUpdated,
   }) : super(key: key);
 
   @override
@@ -27,30 +33,104 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
   
   // Typewriter text state
   int _charCount = 0;
-  final String _targetText = 
-      "Oh Cabo, you absolute disaster\n"
-      "Spinning out, losing control much faster\n"
-      "Sunburns, lost phones, and a broken toe\n"
-      "Best worst trip we'll ever know!";
+  String get _targetText => widget.initialLyrics;
       
   Timer? _typewriterTimer;
+
+  String get _note1Text {
+    if (widget.tripName == "Mudfest 2024") return '"Waded in mud for hours!"\n- Alex';
+    if (widget.tripName == "Vegas Mistakes") return '"Lost all my cash!"\n- Alex';
+    if (widget.tripName == "Roadtrip '22") return '"No AC in Death Valley!"\n- Dave';
+    return '"I lost my shoe in the ocean!"\n- Sarah';
+  }
+
+  String get _note2Text {
+    if (widget.tripName == "Mudfest 2024") return 'Pin:\nThe giant mud slide';
+    if (widget.tripName == "Vegas Mistakes") return 'Pin:\nThe Elvis chapel';
+    if (widget.tripName == "Roadtrip '22") return 'Pin:\nConcrete dinosaur';
+    return 'Pin:\nThe sketchy taco stand';
+  }
+
+  String get _note3Text {
+    if (widget.tripName == "Mudfest 2024") return 'Dave slept on hay';
+    if (widget.tripName == "Vegas Mistakes") return 'Flamingo in pool';
+    if (widget.tripName == "Roadtrip '22") return 'Cassette player jammed';
+    return 'Dave dropped his taco';
+  }
+
+  String get _note3Author {
+    if (widget.tripName == "Vegas Mistakes") return 'Sarah';
+    if (widget.tripName == "Roadtrip '22") return 'Alex';
+    return 'Dave';
+  }
+
+  String _getVerse1TextForTrip(String tripName) {
+    if (tripName == "Mudfest 2024") {
+      return "Truck got stuck in the first mud pit\n"
+          "Dave was not happy about it one bit\n"
+          "Wading in brown sludge up to our waist\n"
+          "Funnel cake crumbs and a swampy taste";
+    } else if (tripName == "Vegas Mistakes") {
+      return "Put all our chips on a single spin\n"
+          "Thought for sure we were gonna win\n"
+          "Lost every dollar by half past nine\n"
+          "Sarah fell asleep by the neon sign";
+    } else if (tripName == "Roadtrip '22") {
+      return "Drove ten hours in the blazing sun\n"
+          "Flat tire number three was so much fun\n"
+          "No AC and the soda was warm\n"
+          "Rolled into town in a desert storm";
+    } else {
+      return "Packed my bags, forgot my passport\n"
+          "Dave threw up on the airport transport\n"
+          "Tequila shots before the plane took flight\n"
+          "Someone started a random fight";
+    }
+  }
+
+  List<String> _getAvatarsForTrip(String tripName) {
+    if (tripName == "Mudfest 2024") {
+      return [
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuC8uhCZVdeFadbMnrz0wJV-brI8gekrKOtzAtT-jXMrbwzoTEcm5i85_8b8XT9wZMYt-6b4Cw_lAO9MPdqsQ3cwvkbjRQH4hzBuFB68H6lWLUNL8Wd7BpVim-3WNiFntmqrrPw2rHTRl4C4CxZ_-E4JUrrgTLN_adicfzDsi_KotyZl4-RFBfuvb7Jm24RuDctc7jz_a7G_AKGWS-HuhEzyHmvKz5R8zGiiI1iEx92CUuUILv6i6YboM04tCyJ3fjvFw3AIAB-HrGw',
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuCU2_zmIFRpkgWusvXog_OeYiNfSq2E7F-mTgBQDSodDP0vEgCerFiVh6gd3cvq-N84urrif-UUq1mkMZUV4_A1PndsP8huReQvOedq3TCgLon5EZVKcPkk3y4mD_dd4734W7SqFM49a0HMUswKI04y4hwi0Fpw1R9Z2IvPE3RDoXFXn46i2mSCZ9uZOpkjKdngtudurEmy_0_bCSKxm9TV0_dYL9-GAvAmeVZRMi7U3FFtlvxWGlNpEdCShSh4KmtOPL6vJ9tIEFU'
+      ];
+    } else if (tripName == "Vegas Mistakes") {
+      return [
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuD5_VCoHcnC1pLqMCyDVCqdL80braXgy_XDPAvqo1vPZzFWrf0oimhamj_541On7f3LvcP1fDoaDSH02AHKaWLu5ONF-u3Bwdi0lb6XmugL5xgACUWXEU3HMuc7qA6-Qunz-JKSrRJxboDK76UxKPRfulxHijcPJTlDlCJ6QeqhGccelZE1qZfQuNBRLVZZTelXauVNGsinMSa6Gb_mQ8SS8PkSGt9CUacivzeqY5qQLxJZIluwnzXunquaphS_iA5giN9cnQlVWv0',
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuCghbkiryWQhllkb3HHw0EoxcfB-7EWQiMknmg3PbaUm3ONhic0-gmWdSo2UQ3b8NfhOisBharEcLXY9w9S97Cuj6Jz5rKfksZt8Le-HpOx37FOZ01gG19h-t8NKuFmSNP1hFg3edNKBbxCte9n-tsdM_WFVLJDZphFIKEwwXFoID0NQYcjVs2_2CiPpVd-R8HmnxRO78nrdnj_VkgBn5t0sSpNjBcM8feOz4HqV5jMZuTJ1zVFzoBZ_iAqnajoZXvMNtqBRSScElo'
+      ];
+    } else if (tripName == "Roadtrip '22") {
+      return [
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuD5oayLuAuT-Jf8shcPbxOV0xGBf27cwpZVyFMJLCHGwGYNBp1-_V8Nyy_w1xGse8q0QauAG_uEL9uTT7FpyKWah6CQvZrBqEDrDyQqk8tkfVJb4XMN3I-7gkSGwy9_Cqz5t67P9ecpKVHnNPPpAR1AnIqfNv7e5hhi9Vm3hfKBNnewGKxbfksA-AricqPLxW8TqVOwiU8wUGV0BK1vU2ciA1TBZ2qtIg8r6EOj8S2wmNCxcDeVpbJGtMam3X2uHhL1QcXlDoTDtcs',
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuDCp5yQe-WSHgb-VV-LU-_Bi8lOk9kPjwRsXpPLgAuye71CoV0qktKJl6mMVEljAKwAaSDccpL6-IDxNw9RC1aBajcsMXbAKEBxHXKAsgsPEz6f5Dlwxixk6fmN6gngiUkqqafauyoqTI6fqvXvte4i9EugxgwpDjVJMSVigfpkEEkyO-mCtE71ne4QUL1VdvbZ7_QOO-6-IWmyw7n83QYcwfAoyZYTTTfkYITI-Lu293g66d7knlhprRXXVJc8Ncskk34mCS0YrvA'
+      ];
+    } else {
+      return [
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuBaaTO7cLQFBrDukdQJfD3l7ZU6uEhLr7qQH9TyLcgNYThOs7L1vEfkg_UAYeznV4j9-TuRPuvNdEm-a8SRMfXKCouP4ktiKDDcSteE25_lXzgpKSK0ap500-fE4wOvwsjR7sPnnTbkc8-tlghvXVCjAwh9uMVjsdJcQmmUEBEgJ4mCl_lEt72jI-lgpitIkQzLHQq5irnwgSJ6lEpt1JUXp2CthNbiGI6ugpLlX-u9WonwX_UkMZN7MP8RJtCYp6KiE0phyGVbuwU',
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuCghbkiryWQhllkb3HHw0EoxcfB-7EWQiMknmg3PbaUm3ONhic0-gmWdSo2UQ3b8NfhOisBharEcLXY9w9S97Cuj6Jz5rKfksZt8Le-HpOx37FOZ01gG19h-t8NKuFmSNP1hFg3edNKBbxCte9n-tsdM_WFVLJDZphFIKEwwXFoID0NQYcjVs2_2CiPpVd-R8HmnxRO78nrdnj_VkgBn5t0sSpNjBcM8feOz4HqV5jMZuTJ1zVFzoBZ_iAqnajoZXvMNtqBRSScElo'
+      ];
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _charCount = widget.initialLyrics.isNotEmpty ? widget.initialLyrics.length : 0;
+  }
 
   void _startGeneration() {
     if (_isGenerating) return;
     
     setState(() {
       _isGenerating = true;
-      // Start note "suck in" animation
       _noteScale = 0.1;
       _noteOpacity = 0.0;
       _noteOffset = const Offset(120.0, -180.0);
     });
 
-    // Simulate typing
     _charCount = 0;
     _typewriterTimer?.cancel();
     
-    // Wait for suck-in animation to complete (approx 400ms) before starting text reveal
     Future.delayed(const Duration(milliseconds: 500), () {
       _typewriterTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) {
         if (_charCount < _targetText.length) {
@@ -62,6 +142,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
           setState(() {
             _isGenerating = false;
           });
+          widget.onLyricsUpdated(_targetText);
         }
       });
     });
@@ -75,6 +156,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final avatars = _getAvatarsForTrip(widget.tripName);
     return Scaffold(
       backgroundColor: BrutalTheme.backgroundLight,
       appBar: PreferredSize(
@@ -114,7 +196,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "CABO FAIL '23",
+                        widget.tripName.toUpperCase(),
                         style: GoogleFonts.spaceMono(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -125,29 +207,27 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                   ),
                   Row(
                     children: [
-                      // Avatar stacked left
                       Container(
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
-                          image: const DecorationImage(
-                            image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuBaaTO7cLQFBrDukdQJfD3l7ZU6uEhLr7qQH9TyLcgNYThOs7L1vEfkg_UAYeznV4j9-TuRPuvNdEm-a8SRMfXKCouP4ktiKDDcSteE25_lXzgpKSK0ap500-fE4wOvwsjR7sPnnTbkc8-tlghvXVCjAwh9uMVjsdJcQmmUEBEgJ4mCl_lEt72jI-lgpitIkQzLHQq5irnwgSJ6lEpt1JUXp2CthNbiGI6ugpLlX-u9WonwX_UkMZN7MP8RJtCYp6KiE0phyGVbuwU'),
+                          image: DecorationImage(
+                            image: NetworkImage(avatars[0]),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                       const SizedBox(width: 4),
-                      // Avatar stacked right
                       Container(
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
-                          image: const DecorationImage(
-                            image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuCghbkiryWQhllkb3HHw0EoxcfB-7EWQiMknmg3PbaUm3ONhic0-gmWdSo2UQ3b8NfhOisBharEcLXY9w9S97Cuj6Jz5rKfksZt8Le-HpOx37FOZ01gG19h-t8NKuFmSNP1hFg3edNKBbxCte9n-tsdM_WFVLJDZphFIKEwwXFoID0NQYcjVs2_2CiPpVd-R8HmnxRO78nrdnj_VkgBn5t0sSpNjBcM8feOz4HqV5jMZuTJ1zVFzoBZ_iAqnajoZXvMNtqBRSScElo'),
+                          image: DecorationImage(
+                            image: NetworkImage(avatars[1]),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -163,7 +243,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
       body: GrainOverlay(
         child: Stack(
           children: [
-            // Editor canvas
             SingleChildScrollView(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 76.0, bottom: 200.0),
               child: Column(
@@ -178,7 +257,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ),
             
-            // Toolbar (stuck to top of page below app bar)
             Positioned(
               top: 0,
               left: 0,
@@ -204,7 +282,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ),
             
-            // Background Note: "I lost my shoe..." (right side)
             Positioned(
               right: 12,
               top: 140,
@@ -217,7 +294,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                   child: SizedBox(
                     width: 100,
                     child: Text(
-                      '"I lost my shoe in the ocean!"\n- Sarah',
+                      _note1Text,
                       style: GoogleFonts.caveat(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -229,7 +306,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ),
             
-            // Background Note: "Pin: The sketchy taco stand" (left side)
             Positioned(
               left: 12,
               top: 360,
@@ -242,7 +318,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                   child: SizedBox(
                     width: 100,
                     child: Text(
-                      'Pin:\nThe sketchy taco stand',
+                      _note2Text,
                       style: GoogleFonts.caveat(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -254,7 +330,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ),
             
-            // Bottom Action Bar
             Positioned(
               bottom: 0,
               left: 0,
@@ -277,7 +352,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Generate Verse button
                     BrutalButton(
                       color: BrutalTheme.primary,
                       fullWidth: true,
@@ -300,7 +374,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    // Produce Track button
                     BrutalButton(
                       color: BrutalTheme.yellow,
                       fullWidth: true,
@@ -327,7 +400,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ),
             
-            // Animated Suck-in Note: "Dave dropped his taco"
             if (_noteOpacity > 0.01)
               Positioned(
                 left: 20,
@@ -351,7 +423,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                             const Icon(Icons.sticky_note_2, size: 16, color: BrutalTheme.inkBlack),
                             const SizedBox(width: 6),
                             Text(
-                              'Dave dropped his taco',
+                              _note3Text,
                               style: GoogleFonts.caveat(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -414,10 +486,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                "Packed my bags, forgot my passport\n"
-                "Dave threw up on the airport transport\n"
-                "Tequila shots before the plane took flight\n"
-                "Someone started a random fight",
+                _getVerse1TextForTrip(widget.tripName),
                 style: GoogleFonts.courierPrime(
                   fontSize: 16,
                   height: 1.5,
@@ -427,7 +496,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               ),
             ],
           ),
-          // Collaborative cursor for Dave
           Positioned(
             bottom: 4,
             right: 20,
@@ -447,7 +515,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                     border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
                   ),
                   child: Text(
-                    'Dave',
+                    _note3Author,
                     style: GoogleFonts.spaceMono(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -509,8 +577,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 ),
             ],
           ),
-          
-          // Collaborative cursor for AI Magic
           if (showGeneratingHeader)
             Positioned(
               left: 120,

@@ -145,7 +145,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('VIEW DIARY & MAP (THE EVIDENCE)'));
       await tester.pumpAndSettle();
-      expect(find.text('THE EVIDENCE'), findsOneWidget);
+      expect(find.text("CABO FAIL '23 EVIDENCE"), findsOneWidget);
 
       // Go back
       await tester.tap(find.byIcon(Icons.arrow_back));
@@ -173,6 +173,9 @@ void main() {
           home: TypewriterScreen(
             onBack: () {},
             onProduceTrack: () {},
+            tripName: "Cabo Fail '23",
+            initialLyrics: "Oh Cabo...",
+            onLyricsUpdated: (_) {},
           ),
         ),
       );
@@ -207,6 +210,31 @@ void main() {
         MaterialApp(
           home: EvidenceScreen(
             onBack: () {},
+            tripName: "Cabo Fail '23",
+            mapImageUrl: "",
+            memories: const [
+              TimelineMemory(
+                id: 'mem-1',
+                time: '11:42 PM',
+                author: '@alex',
+                text: 'Alex tried to fight a seagull...',
+                icon: Icons.bolt,
+                iconBg: Colors.yellow,
+              ),
+              TimelineMemory(
+                id: 'mem-2',
+                time: '02:15 AM',
+                author: '@sarah',
+                text: 'Ended up at...',
+                icon: Icons.local_fire_department,
+                iconBg: Colors.red,
+              ),
+            ],
+            mapPins: const [
+              MapPin(memoryId: 'mem-1', label: 'THE INCIDENT', left: 50, top: 50),
+              MapPin(memoryId: 'mem-2', label: 'BAD IDEA #4', right: 80, bottom: 40),
+            ],
+            onAddMemory: (_) {},
           ),
         ),
       );
@@ -214,7 +242,9 @@ void main() {
       // Click Add the Tea
       await tester.tap(find.text('ADD THE TEA'));
       await tester.pumpAndSettle();
-      expect(find.text('SPILLING THE TEA... NEW MEMORY POPUP COMING SOON!'), findsOneWidget);
+      expect(find.text('ADD NEW EVIDENCE'), findsOneWidget);
+      await tester.tap(find.text('CANCEL'));
+      await tester.pumpAndSettle();
 
       // Click Map Pins
       await tester.tap(find.text('THE INCIDENT'));
@@ -236,6 +266,8 @@ void main() {
         MaterialApp(
           home: BangerScreen(
             onBack: () {},
+            tripName: "Cabo Fail '23",
+            lyrics: "Left my passport in the Uber\nNow I'm crying by the pool\nSunburn looking like a lobster\nDave is sleeping on the stool",
           ),
         ),
       );

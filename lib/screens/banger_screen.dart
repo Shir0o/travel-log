@@ -9,10 +9,14 @@ enum StudioState { setup, generating, playback }
 
 class BangerScreen extends StatefulWidget {
   final VoidCallback onBack;
+  final String tripName;
+  final String lyrics;
 
   const BangerScreen({
     Key? key,
     required this.onBack,
+    required this.tripName,
+    required this.lyrics,
   }) : super(key: key);
 
   @override
@@ -42,12 +46,17 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
   int _currentLyricIndex = 0;
   Timer? _lyricScrollTimer;
   
-  final List<String> _lyrics = [
-    "Left my passport in the Uber",
-    "Now I'm crying by the pool",
-    "Sunburn looking like a lobster",
-    "Dave is sleeping on the stool"
-  ];
+  List<String> get _lyrics {
+    if (widget.lyrics.trim().isEmpty) {
+      return [
+        "No lyrics generated yet!",
+        "Go back to Scrapbook...",
+        "And write lyrics first...",
+        "Before producing the track!"
+      ];
+    }
+    return widget.lyrics.split('\n').where((line) => line.trim().isNotEmpty).toList();
+  }
 
   @override
   void initState() {
@@ -340,7 +349,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       child: Text(
-                        "Cabo Fail '23",
+                        widget.tripName,
                         style: GoogleFonts.caveat(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

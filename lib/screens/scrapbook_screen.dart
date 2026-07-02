@@ -6,11 +6,13 @@ import '../widgets/brutal_widgets.dart';
 class ScrapbookScreen extends StatelessWidget {
   final Function(int) onNavigateToTab;
   final Function(String screenName) onNavigateToDirectScreen;
+  final ValueChanged<String> onTripSelected;
 
   const ScrapbookScreen({
     Key? key,
     required this.onNavigateToTab,
     required this.onNavigateToDirectScreen,
+    required this.onTripSelected,
   }) : super(key: key);
 
   @override
@@ -232,7 +234,10 @@ class ScrapbookScreen extends StatelessWidget {
       rotationDegrees: -1.0,
       hasTape: true,
       tapeRotationDegrees: 3.0,
-      onTap: () => _showTripOptions(context, "Cabo Fail '23"),
+      onTap: () {
+        onTripSelected("Cabo Fail '23");
+        _showTripOptions(context, "Cabo Fail '23");
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -305,7 +310,10 @@ class ScrapbookScreen extends StatelessWidget {
     return BrutalCard(
       color: Colors.white,
       rotationDegrees: 2.0,
-      onTap: () => _showTripOptions(context, "Mudfest 2024"),
+      onTap: () {
+        onTripSelected("Mudfest 2024");
+        _showTripOptions(context, "Mudfest 2024");
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -370,7 +378,10 @@ class ScrapbookScreen extends StatelessWidget {
     return BrutalCard(
       color: BrutalTheme.primary,
       rotationDegrees: -2.0,
-      onTap: () => _showTripOptions(context, "Vegas Mistakes"),
+      onTap: () {
+        onTripSelected("Vegas Mistakes");
+        _showTripOptions(context, "Vegas Mistakes");
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -422,7 +433,10 @@ class ScrapbookScreen extends StatelessWidget {
     return BrutalCard(
       color: BrutalTheme.yellow,
       rotationDegrees: 1.0,
-      onTap: () => _showTripOptions(context, "Roadtrip '22"),
+      onTap: () {
+        onTripSelected("Roadtrip '22");
+        _showTripOptions(context, "Roadtrip '22");
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

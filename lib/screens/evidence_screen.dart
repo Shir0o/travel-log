@@ -1,14 +1,69 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme.dart';
 import '../widgets/brutal_widgets.dart';
 
+class TimelineMemory {
+  final String id;
+  final String time;
+  final String author;
+  final String text;
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+  final double rotationDegrees;
+  final String? imageUrl;
+  final String? category;
+
+  const TimelineMemory({
+    required this.id,
+    required this.time,
+    required this.author,
+    required this.text,
+    required this.icon,
+    required this.iconBg,
+    this.iconColor = Colors.black,
+    this.rotationDegrees = 0.0,
+    this.imageUrl,
+    this.category,
+  });
+}
+
+class MapPin {
+  final String memoryId;
+  final String label;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+
+  const MapPin({
+    required this.memoryId,
+    required this.label,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+  });
+}
+
 class EvidenceScreen extends StatefulWidget {
   final VoidCallback onBack;
+  final String tripName;
+  final String mapImageUrl;
+  final List<TimelineMemory> memories;
+  final List<MapPin> mapPins;
+  final ValueChanged<TimelineMemory> onAddMemory;
 
   const EvidenceScreen({
     Key? key,
     required this.onBack,
+    required this.tripName,
+    required this.mapImageUrl,
+    required this.memories,
+    required this.mapPins,
+    required this.onAddMemory,
   }) : super(key: key);
 
   @override
@@ -40,6 +95,160 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
         });
       }
     });
+  }
+
+  void _showAddTeaDialog(BuildContext context) {
+    final TextEditingController authorController = TextEditingController(text: '@alex');
+    final TextEditingController textController = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            child: BrutalCard(
+              color: BrutalTheme.backgroundLight,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const DymoLabel(text: 'ADD NEW EVIDENCE', fontSize: 16),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Spill the tea. Document what happened.',
+                    style: GoogleFonts.courierPrime(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: BrutalTheme.inkBlack,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Author Input
+                  Text(
+                    'YOUR HANDLE:',
+                    style: GoogleFonts.spaceMono(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: BrutalTheme.inkBlack,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    decoration: BrutalTheme.brutalDecoration(
+                      color: Colors.white,
+                      borderWidth: 2.0,
+                      showShadow: false,
+                    ),
+                    child: TextField(
+                      controller: authorController,
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Memory Text Input
+                  Text(
+                    'WHAT HAPPENED:',
+                    style: GoogleFonts.spaceMono(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: BrutalTheme.inkBlack,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    decoration: BrutalTheme.brutalDecoration(
+                      color: Colors.white,
+                      borderWidth: 2.0,
+                      showShadow: false,
+                    ),
+                    child: TextField(
+                      controller: textController,
+                      maxLines: 3,
+                      style: GoogleFonts.courierPrime(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        hintText: 'e.g. Lost a shoe in the river...',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: BrutalButton(
+                          color: BrutalTheme.primary,
+                          onPressed: () {
+                            if (textController.text.trim().isEmpty) return;
+                            
+                            // Format current time
+                            final now = DateTime.now();
+                            final hour = now.hour > 12 ? now.hour - 12 : (now.hour == 0 ? 12 : now.hour);
+                            final timeString = "${hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} ${now.hour >= 12 ? 'PM' : 'AM'}";
+                            
+                            final newMemory = TimelineMemory(
+                              id: 'mem-${DateTime.now().millisecondsSinceEpoch}',
+                              time: timeString,
+                              author: authorController.text.trim().startsWith('@') 
+                                  ? authorController.text.trim() 
+                                  : '@${authorController.text.trim()}',
+                              text: textController.text.trim(),
+                              icon: Icons.error_outline,
+                              iconBg: BrutalTheme.yellow,
+                              category: 'TEA',
+                              rotationDegrees: (math.Random().nextDouble() * 6) - 3,
+                            );
+                            
+                            widget.onAddMemory(newMemory);
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'SPILL IT',
+                            style: GoogleFonts.spaceMono(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: BrutalButton(
+                          color: Colors.white,
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            'CANCEL',
+                            style: GoogleFonts.spaceMono(
+                              color: BrutalTheme.inkBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -84,7 +293,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "THE EVIDENCE",
+                        "${widget.tripName.toUpperCase()} EVIDENCE",
                         style: GoogleFonts.spaceMono(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -93,7 +302,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 40), // Spacer matching back button
+                  const SizedBox(width: 40),
                 ],
               ),
             ),
@@ -123,22 +332,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                 color: BrutalTheme.primary,
                 fullWidth: true,
                 height: 56.0,
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: BrutalTheme.primary,
-                      behavior: SnackBarBehavior.floating,
-                      margin: const EdgeInsets.only(bottom: 90, left: 16, right: 16),
-                      content: Text(
-                        'SPILLING THE TEA... NEW MEMORY POPUP COMING SOON!',
-                        style: GoogleFonts.spaceMono(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                onPressed: () => _showAddTeaDialog(context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -165,120 +359,76 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
   Widget _buildMapSection() {
     return Container(
       height: 240,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.grey,
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: BrutalTheme.inkBlack, width: 3.0),
         ),
         image: DecorationImage(
-          image: NetworkImage(
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuDMHms3J94ZNjT47OBSVc9ASGToglMRsH4M7TugUYqZNLagdBdlXG1KkQElo-6WnvGjhEXccwWMfKlx0M3_H6tRGBmy79-ZmOSo27xJ5rrxDcID3eLSg5UuvwpTGwqDAsqWyIkgNckmm9DrKkjKi5V4Yt9S0G82nqo6IzhOScueF3PBzxCwRsaYhaj__lUaUtz_kCywpGJMPa_lIGe_qOHmc45eg0eUMTV3tJ2h_iMT8wc-vIZCMvk-V1-iymfJ0QjChcHhumJRg3w',
-          ),
+          image: NetworkImage(widget.mapImageUrl),
           fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.black38, BlendMode.multiply),
+          colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.multiply),
         ),
       ),
       child: Stack(
         children: [
-          // Zine Overlay color filter
           Container(color: Colors.black12),
-          
-          // Map Pin 1: THE INCIDENT
-          Positioned(
-            left: 50,
-            top: 50,
-            child: GestureDetector(
-              onTap: () => _scrollToMemory('mem-1', 0.0),
-              child: Column(
-                children: [
-                  Transform.rotate(
-                    angle: -3.0 * 3.14159 / 180,
-                    child: Container(
-                      decoration: BrutalTheme.brutalDecoration(
-                        color: BrutalTheme.primary,
-                        borderWidth: 2.0,
-                        showShadow: true,
-                        shadowOffset: const Offset(2, 2),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                      child: Text(
-                        'THE INCIDENT',
-                        style: GoogleFonts.spaceMono(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+          ...widget.mapPins.map((pin) {
+            final index = widget.memories.indexWhere((m) => m.id == pin.memoryId);
+            final double targetScrollOffset = index >= 0 ? index * 260.0 : 0.0;
+
+            return Positioned(
+              left: pin.left,
+              top: pin.top,
+              right: pin.right,
+              bottom: pin.bottom,
+              child: GestureDetector(
+                onTap: () => _scrollToMemory(pin.memoryId, targetScrollOffset),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Transform.rotate(
+                      angle: -3.0 * 3.14159 / 180,
+                      child: Container(
+                        decoration: BrutalTheme.brutalDecoration(
+                          color: BrutalTheme.primary,
+                          borderWidth: 2.0,
+                          showShadow: true,
+                          shadowOffset: const Offset(2, 2),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                        child: Text(
+                          pin.label.toUpperCase(),
+                          style: GoogleFonts.spaceMono(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.location_on,
-                    color: BrutalTheme.primary,
-                    size: 36,
-                    shadows: [
-                      Shadow(
-                        color: BrutalTheme.inkBlack,
-                        offset: Offset(2, 2),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          
-          // Map Pin 2: BAD IDEA #4
-          Positioned(
-            right: 80,
-            bottom: 40,
-            child: GestureDetector(
-              onTap: () => _scrollToMemory('mem-2', 360.0),
-              child: Column(
-                children: [
-                  Transform.rotate(
-                    angle: 4.0 * 3.14159 / 180,
-                    child: Container(
-                      decoration: BrutalTheme.brutalDecoration(
-                        color: BrutalTheme.primary,
-                        borderWidth: 2.0,
-                        showShadow: true,
-                        shadowOffset: const Offset(2, 2),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                      child: Text(
-                        'BAD IDEA #4',
-                        style: GoogleFonts.spaceMono(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+                    const Icon(
+                      Icons.location_on,
+                      color: BrutalTheme.primary,
+                      size: 36,
+                      shadows: [
+                        Shadow(
+                          color: BrutalTheme.inkBlack,
+                          offset: Offset(2, 2),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  const Icon(
-                    Icons.location_on,
-                    color: BrutalTheme.primary,
-                    size: 36,
-                    shadows: [
-                      Shadow(
-                        color: BrutalTheme.inkBlack,
-                        offset: Offset(2, 2),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ],
       ),
     );
   }
 
   Widget _buildTimelineSection() {
-    final bool flashMem1 = _highlightedId == 'mem-1';
-    final bool flashMem2 = _highlightedId == 'mem-2';
-
     return Stack(
       children: [
         // Vertical Timeline Track Line
@@ -297,158 +447,66 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 24.0, bottom: 120.0),
           child: Column(
             children: [
-              // Memory 1
-              _buildTimelineNode(
-                id: 'mem-1',
-                time: '11:42 PM',
-                author: '@alex',
-                rotationDegrees: -2.0,
-                flash: flashMem1,
-                icon: Icons.bolt,
-                iconBg: BrutalTheme.yellow,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                            'https://lh3.googleusercontent.com/aida-public/AB6AXuAqb6LbvBrW4Ue7MDpYvmzbpa3X5fcuFWPtqqrdKEiPjauXeqmVkyr1FoK2oQ86wIllp4eCLovXTDALySIyfTpuZsJKZIffX3GI4Wc4TVJgzAzWHsgNsxwMe0EDW12vTKwjH7Yo4x8epfn-t-uF4ABXKVfuhM5rJfJlCtfFIEhuWowtu075ufdeINuDczymoFN2gb7MNlwvSI5oSPkGiqsrI2KtTxhp16JhKwgBpo32ItQuvg_DLFOLCd8W8UsZtYnNhDrM9QUFG3k',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: BrutalTheme.yellow,
-                        border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      child: Text(
-                        'FAIL',
-                        style: GoogleFonts.courierPrime(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: BrutalTheme.inkBlack,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Alex tried to fight a seagull for the last churro. The seagull won. We are never returning to this pier.',
-                      style: GoogleFonts.courierPrime(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        height: 1.3,
-                        color: BrutalTheme.inkBlack,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              
-              // Memory 2
-              _buildTimelineNode(
-                id: 'mem-2',
-                time: '02:15 AM',
-                author: '@sarah',
-                rotationDegrees: 3.0,
-                flash: flashMem2,
-                icon: Icons.local_fire_department,
-                iconBg: BrutalTheme.primary,
-                iconColor: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: BrutalTheme.inkBlack,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '"I know a shortcut through the alley."',
-                            style: GoogleFonts.spaceMono(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+              ...widget.memories.map((memory) {
+                final bool isHighlighted = _highlightedId == memory.id;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 40.0),
+                  child: _buildTimelineNode(
+                    id: memory.id,
+                    time: memory.time,
+                    author: memory.author,
+                    rotationDegrees: memory.rotationDegrees,
+                    flash: isHighlighted,
+                    icon: memory.icon,
+                    iconBg: memory.iconBg,
+                    iconColor: memory.iconColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (memory.imageUrl != null)
+                          Container(
+                            height: 120,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                              image: DecorationImage(
+                                image: NetworkImage(memory.imageUrl!),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '- Famous last words',
-                            style: GoogleFonts.spaceMono(
-                              color: BrutalTheme.primary,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                        if (memory.category != null)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 6),
+                            decoration: BoxDecoration(
+                              color: memory.iconBg,
+                              border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            child: Text(
+                              memory.category!.toUpperCase(),
+                              style: GoogleFonts.courierPrime(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: memory.iconColor,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Ended up at a 24hr laundromat playing poker with candy wrappers.',
-                      style: GoogleFonts.courierPrime(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        height: 1.3,
-                        color: BrutalTheme.inkBlack,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              
-              // Memory 3
-              _buildTimelineNode(
-                id: 'mem-3',
-                time: '04:00 AM',
-                author: '@group',
-                rotationDegrees: -1.0,
-                flash: false,
-                icon: Icons.music_note,
-                iconBg: BrutalTheme.yellow,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                            'https://lh3.googleusercontent.com/aida-public/AB6AXuAa9qiUmdAn3I64gl8K4ttDZttAwinQPlReLQZWN9kOMrbJVmCHh3RgR-xZU-4fr8CvUS5rD-ql8B8PB5XsPNnvYyZ0v00_KrlexLnLexSB_PqIX9f-lAE3tIeMZ5ijH95a1ALJfNJs-U9uEF6_kifH_8ISG6yah6Weuq6w1FO0TjnjW4VjGyIuTvrzvK6oVBs89ft5wtKJ4Cpx_SnJ4am_Tpb7T04QTErssDV2CC1yErbuA8DzUUFDrPuAefpcL8fRWO70WCXwDtM',
+                        Text(
+                          memory.text,
+                          style: GoogleFonts.courierPrime(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3,
+                            color: BrutalTheme.inkBlack,
                           ),
-                          fit: BoxFit.cover,
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Karaoke meltdown. We owe the owner an apology for destroying \'Mr. Brightside\'.',
-                      style: GoogleFonts.courierPrime(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        height: 1.3,
-                        color: BrutalTheme.inkBlack,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              
+                  ),
+                );
+              }).toList(),
+              const SizedBox(height: 10),
               Text(
                 '--- END OF TAPE ---',
                 style: GoogleFonts.spaceMono(
@@ -502,7 +560,6 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Header (dashed border)
                 Container(
                   padding: const EdgeInsets.only(bottom: 6),
                   decoration: const BoxDecoration(
@@ -510,7 +567,6 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                       bottom: BorderSide(
                         color: BrutalTheme.inkBlack,
                         width: 1.5,
-                        style: BorderStyle.solid, // Flutter dashed border is complex, solid is fine for scaffold
                       ),
                     ),
                   ),
