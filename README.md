@@ -47,6 +47,18 @@ Road Song rejects boring, flat, modern UI designs in favor of **Neo-Brutalism**:
 
 ---
 
+## 🏷️ Releases
+
+Get the latest build to install directly on your device:
+- **Download APK**: Visit the [Releases](https://github.com/Shir0o/road-song/releases) page on GitHub to download the compiled `app-release.apk` for the latest version (e.g., [v1.0.0](https://github.com/Shir0o/road-song/releases/tag/v1.0.0)).
+- **Build Locally**: To build a release APK on your local machine, run:
+  ```bash
+  flutter build apk --release
+  ```
+  The compiled APK will be located at `build/app/outputs/flutter-apk/app-release.apk`.
+
+---
+
 ## 🧪 Testing & Validation
 
 Road Song maintains a strict **>= 90% test coverage** requirement on all pull requests, validated on every push via GitHub Actions.
