@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../theme.dart';
 import '../widgets/brutal_widgets.dart';
 
@@ -35,6 +40,19 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
     "Chaotic Rap"
   ];
 
+  // ElevenLabs API Settings
+  String _elevenlabsApiKey = '';
+  int _musicLengthSeconds = 30;
+
+  // Audio Player
+  late AudioPlayer _audioPlayer;
+  Uint8List? _audioBytes;
+  Duration _audioDuration = Duration.zero;
+  Duration _audioPosition = Duration.zero;
+  StreamSubscription? _durationSubscription;
+  StreamSubscription? _positionSubscription;
+  StreamSubscription? _playerCompleteSubscription;
+
   // Generating State Animation
   List<double> _waveHeights = List.generate(35, (index) => 0.1);
   Timer? _generatorTimer;
@@ -67,11 +85,283 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
       vsync: this,
       duration: const Duration(seconds: 4),
     );
+
+    _audioPlayer = AudioPlayer();
+    _loadSettings();
+    _setupAudioPlayerListeners();
+  }
+
+  void _setupAudioPlayerListeners() {
+    _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
+      if (mounted) {
+        setState(() {
+          _audioDuration = duration;
+        });
+      }
+    });
+
+    _positionSubscription = _audioPlayer.onPositionChanged.listen((position) {
+      if (mounted) {
+        setState(() {
+          _audioPosition = position;
+          _updateLyricIndex(position);
+        });
+      }
+    });
+
+    _playerCompleteSubscription = _audioPlayer.onPlayerComplete.listen((event) {
+      if (mounted) {
+        setState(() {
+          _isPlaying = false;
+          _audioPosition = Duration.zero;
+          _currentLyricIndex = 0;
+        });
+        _vinylSpinController.stop();
+      }
+    });
+  }
+
+  void _updateLyricIndex(Duration position) {
+    if (_lyrics.isEmpty || _audioDuration == Duration.zero) return;
+    final totalMs = _audioDuration.inMilliseconds;
+    if (totalMs <= 0) return;
+    
+    final currentMs = position.inMilliseconds;
+    final double step = totalMs / _lyrics.length;
+    int index = (currentMs / step).floor();
+    index = index.clamp(0, _lyrics.length - 1);
+    
+    if (index != _currentLyricIndex) {
+      setState(() {
+        _currentLyricIndex = index;
+      });
+    }
+  }
+
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
+
+  Future<void> _loadSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _elevenlabsApiKey = prefs.getString('elevenlabs_api_key') ?? '';
+        _musicLengthSeconds = prefs.getInt('elevenlabs_music_length') ?? 30;
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _saveSettings(String key, int duration) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('elevenlabs_api_key', key);
+      await prefs.setInt('elevenlabs_music_length', duration);
+      setState(() {
+        _elevenlabsApiKey = key;
+        _musicLengthSeconds = duration;
+      });
+    } catch (_) {}
+  }
+
+  void _showSettingsDialog() {
+    final keyController = TextEditingController(text: _elevenlabsApiKey);
+    int tempDuration = _musicLengthSeconds;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: BrutalCard(
+                color: BrutalTheme.backgroundLight,
+                borderWidth: 4.0,
+                showShadow: true,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'ELEVENLABS SETTINGS',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'API KEY',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.graphite,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      decoration: BrutalTheme.brutalDecoration(
+                        color: Colors.white,
+                        borderWidth: 2.0,
+                        showShadow: false,
+                      ),
+                      child: TextField(
+                        controller: keyController,
+                        obscureText: true,
+                        style: GoogleFonts.spaceMono(
+                          fontSize: 14,
+                          color: BrutalTheme.inkBlack,
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          hintText: 'Enter ElevenLabs API key...',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'TRACK DURATION',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.graphite,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [10, 20, 30, 45, 60].map((sec) {
+                        final bool isSelected = tempDuration == sec;
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                setDialogState(() {
+                                  tempDuration = sec;
+                                });
+                              },
+                              child: Container(
+                                height: 36,
+                                decoration: BrutalTheme.brutalDecoration(
+                                  color: isSelected ? BrutalTheme.yellow : Colors.white,
+                                  borderWidth: 2.0,
+                                  showShadow: false,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${sec}S',
+                                  style: GoogleFonts.spaceMono(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: BrutalTheme.inkBlack,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: BrutalButton(
+                            color: Colors.white,
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(
+                              'CANCEL',
+                              style: GoogleFonts.spaceMono(
+                                  fontWeight: FontWeight.bold,
+                                  color: BrutalTheme.inkBlack),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: BrutalButton(
+                            color: BrutalTheme.cyan,
+                            onPressed: () {
+                              _saveSettings(
+                                keyController.text.trim(),
+                                tempDuration,
+                              );
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: BrutalTheme.cyan,
+                                  content: Text(
+                                    'ELEVENLABS SETTINGS SAVED!',
+                                    style: GoogleFonts.spaceMono(
+                                      fontWeight: FontWeight.bold,
+                                      color: BrutalTheme.inkBlack,
+                                    ),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.all(16),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'SAVE',
+                              style: GoogleFonts.spaceMono(
+                                  fontWeight: FontWeight.bold,
+                                  color: BrutalTheme.inkBlack),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void _startRecordFlow() {
+    if (_elevenlabsApiKey.isEmpty) {
+      _showOfflineNotification();
+      _startMockGeneration();
+    } else {
+      _generateMusicWithElevenLabs();
+    }
+  }
+
+  void _showOfflineNotification() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: BrutalTheme.yellow,
+        content: Text(
+          "Using mock generation. Configure ElevenLabs API key in Settings (cyan gear) for real music!",
+          style: GoogleFonts.spaceMono(
+            color: BrutalTheme.inkBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 11,
+          ),
+        ),
+        duration: const Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  void _startMockGeneration() {
     setState(() {
       _currentState = StudioState.generating;
+      _audioBytes = null;
     });
 
     // Start generating simulated waveform animation
@@ -98,6 +388,132 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
     });
   }
 
+  Future<void> _generateMusicWithElevenLabs() async {
+    setState(() {
+      _currentState = StudioState.generating;
+      _audioBytes = null;
+    });
+
+    // Start generating simulated waveform animation
+    _generatorTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (mounted) {
+        setState(() {
+          final random = math.Random();
+          _waveHeights = List.generate(35, (index) => random.nextDouble());
+        });
+      }
+    });
+
+    try {
+      final String promptText = "A $_selectedVibe song titled '${widget.tripName}' with lyrics: ${widget.lyrics.replaceAll('\n', ' ')}";
+      
+      final response = await http.post(
+        Uri.parse('https://api.elevenlabs.io/v1/music/stream'),
+        headers: {
+          'xi-api-key': _elevenlabsApiKey,
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'prompt': promptText,
+          'music_length_ms': _musicLengthSeconds * 1000,
+        }),
+      );
+
+      _generatorTimer?.cancel();
+
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        if (mounted) {
+          setState(() {
+            _audioBytes = bytes;
+            _currentState = StudioState.playback;
+            _isPlaying = true;
+          });
+          
+          await _audioPlayer.play(BytesSource(bytes));
+          _vinylSpinController.repeat();
+        }
+      } else {
+        final errorText = response.body;
+        String friendlyError = "API Error (${response.statusCode})";
+        try {
+          final decoded = jsonDecode(errorText);
+          if (decoded['detail'] != null && decoded['detail']['status'] != null) {
+            friendlyError = "${decoded['detail']['status']}: ${decoded['detail']['message']}";
+          }
+        } catch (_) {}
+        
+        if (mounted) {
+          setState(() {
+            _currentState = StudioState.setup;
+          });
+          _showErrorDialog(friendlyError);
+        }
+      }
+    } catch (e) {
+      _generatorTimer?.cancel();
+      if (mounted) {
+        setState(() {
+          _currentState = StudioState.setup;
+        });
+        _showErrorDialog(e.toString());
+      }
+    }
+  }
+
+  void _showErrorDialog(String error) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: BrutalCard(
+            color: BrutalTheme.yellow,
+            borderWidth: 4.0,
+            showShadow: true,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'GENERATION FAILED',
+                  style: GoogleFonts.spaceMono(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: BrutalTheme.inkBlack,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  error,
+                  style: GoogleFonts.spaceMono(
+                    fontSize: 12,
+                    color: BrutalTheme.inkBlack,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                BrutalButton(
+                  color: Colors.white,
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'DISMISS',
+                    style: GoogleFonts.spaceMono(
+                      fontWeight: FontWeight.bold,
+                      color: BrutalTheme.inkBlack,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _startLyricsCycle() {
     _currentLyricIndex = 0;
     _lyricScrollTimer?.cancel();
@@ -114,10 +530,23 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
     setState(() {
       _isPlaying = !_isPlaying;
     });
-    if (_isPlaying) {
-      _vinylSpinController.repeat();
+    
+    if (_audioBytes != null) {
+      if (_isPlaying) {
+        _audioPlayer.resume();
+        _vinylSpinController.repeat();
+      } else {
+        _audioPlayer.pause();
+        _vinylSpinController.stop();
+      }
     } else {
-      _vinylSpinController.stop();
+      if (_isPlaying) {
+        _vinylSpinController.repeat();
+        _startLyricsCycle();
+      } else {
+        _vinylSpinController.stop();
+        _lyricScrollTimer?.cancel();
+      }
     }
   }
 
@@ -127,6 +556,10 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
     _generatingStateTransitionTimer?.cancel();
     _lyricScrollTimer?.cancel();
     _vinylSpinController.dispose();
+    _durationSubscription?.cancel();
+    _positionSubscription?.cancel();
+    _playerCompleteSubscription?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -172,7 +605,20 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       color: BrutalTheme.inkBlack,
                     ),
                   ),
-                  const SizedBox(width: 40), // Spacer matching back button
+                  GestureDetector(
+                    onTap: _showSettingsDialog,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BrutalTheme.brutalDecoration(
+                        color: BrutalTheme.cyan,
+                        borderWidth: 3.0,
+                        showShadow: true,
+                        shadowOffset: const Offset(3, 3),
+                      ),
+                      child: const Icon(Icons.settings, color: BrutalTheme.inkBlack),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -562,6 +1008,57 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           ),
         ),
         
+        const SizedBox(height: 16),
+        
+        // Brutalist Progress Bar
+        if (_audioBytes != null && _audioDuration != Duration.zero)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 16,
+                  decoration: BrutalTheme.brutalDecoration(
+                    color: Colors.white,
+                    borderWidth: 2.5,
+                    showShadow: false,
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: (_audioPosition.inMilliseconds / _audioDuration.inMilliseconds)
+                        .clamp(0.0, 1.0),
+                    child: Container(
+                      color: BrutalTheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _formatDuration(_audioPosition),
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                    ),
+                    Text(
+                      _formatDuration(_audioDuration),
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
         const SizedBox(height: 20),
         
         // Karaoke Lyrics Area
