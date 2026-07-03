@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:road_song/widgets/brutal_widgets.dart';
 import 'package:road_song/screens/typewriter_screen.dart';
 import 'package:road_song/screens/evidence_screen.dart';
 import 'package:road_song/screens/banger_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,6 +17,15 @@ void main() {
     // Provide a mock HTTP client that returns 200 with empty PNG bytes
     HttpOverrides.global = _MockHttpOverrides();
     GoogleFonts.config.allowRuntimeFetching = false;
+    SharedPreferences.setMockInitialValues({});
+  });
+
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    _MockHttpClient.mockStatusCode = 200;
+    _MockHttpClient.mockResponseBody = '';
+    _MockHttpClient.mockResponseBytes = null;
+    _MockHttpClient.mockNetworkError = false;
   });
 
   group('Brutal Widgets Tests', () {
@@ -198,6 +209,133 @@ void main() {
       // Verify generation completes
       expect(find.text('GENERATE VERSE'), findsOneWidget);
     });
+
+    testWidgets('Claude API Settings dialog cancel/save', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: TypewriterScreen(
+            onBack: () {},
+            onProduceTrack: () {},
+            tripName: "Cabo Fail '23",
+            initialLyrics: "Oh Cabo...",
+            memories: const [],
+            onLyricsUpdated: (_) {},
+          ),
+        ),
+      );
+
+      // Open settings
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      expect(find.text('CLAUDE API SETTINGS'), findsOneWidget);
+
+      // Tap Cancel
+      await tester.tap(find.text('CANCEL'));
+      await tester.pumpAndSettle();
+      expect(find.text('CLAUDE API SETTINGS'), findsNothing);
+
+      // Open settings again
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+
+      // Enter API key
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'sk-ant-api03-...'),
+        'my-claude-api-key',
+      );
+      await tester.pump();
+
+      // Tap Save
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+      expect(find.text('CLAUDE API SETTINGS'), findsNothing);
+    });
+
+    testWidgets('Claude API generation success flow', (WidgetTester tester) async {
+      _MockHttpClient.mockStatusCode = 200;
+      _MockHttpClient.mockResponseBody = '{"content": [{"text": "Generated lyric content by Claude API"}]}';
+      _MockHttpClient.mockNetworkError = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: TypewriterScreen(
+            onBack: () {},
+            onProduceTrack: () {},
+            tripName: "Cabo Fail '23",
+            initialLyrics: "Oh Cabo...",
+            memories: const [],
+            onLyricsUpdated: (_) {},
+          ),
+        ),
+      );
+
+      // Open settings and save API key
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'sk-ant-api03-...'),
+        'sk-ant-fake-key-123',
+      );
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+
+      // Tap generate verse
+      await tester.tap(find.text('GENERATE VERSE'));
+      await tester.pump();
+      expect(find.text('GENERATING...'), findsOneWidget);
+
+      // Wait for API call and animation timer
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pump(const Duration(seconds: 10));
+      await tester.pumpAndSettle();
+
+      // Verify generation completes
+      expect(find.text('GENERATE VERSE'), findsOneWidget);
+    });
+
+    testWidgets('Claude API generation error and network exception flows', (WidgetTester tester) async {
+      _MockHttpClient.mockStatusCode = 400;
+      _MockHttpClient.mockResponseBody = '{"error": {"message": "Invalid API key provided"}}';
+      _MockHttpClient.mockNetworkError = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: TypewriterScreen(
+            onBack: () {},
+            onProduceTrack: () {},
+            tripName: "Cabo Fail '23",
+            initialLyrics: "Oh Cabo...",
+            memories: const [],
+            onLyricsUpdated: (_) {},
+          ),
+        ),
+      );
+
+      // Set API key
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'sk-ant-api03-...'),
+        'sk-ant-bad-key',
+      );
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+
+      // Generate
+      await tester.tap(find.text('GENERATE VERSE'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
+
+      // Network error exception
+      _MockHttpClient.mockNetworkError = true;
+
+      // Tap generate verse again
+      await tester.tap(find.text('GENERATE VERSE'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
+    });
   });
 
   group('Evidence Screen Tests', () {
@@ -297,6 +435,153 @@ void main() {
       await tester.tap(find.byIcon(Icons.play_arrow));
       await tester.pump(const Duration(milliseconds: 100));
     });
+
+    testWidgets('ElevenLabs API Settings dialog cancel/save', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BangerScreen(
+            onBack: () {},
+            tripName: "Cabo Fail '23",
+            lyrics: "Some lyrics",
+          ),
+        ),
+      );
+
+      // Open settings
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      expect(find.text('ELEVENLABS SETTINGS'), findsOneWidget);
+
+      // Tap Cancel
+      await tester.tap(find.text('CANCEL'));
+      await tester.pumpAndSettle();
+      expect(find.text('ELEVENLABS SETTINGS'), findsNothing);
+
+      // Open settings again
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+
+      // Enter API key
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'Enter ElevenLabs API key...'),
+        'my-eleven-labs-api-key',
+      );
+      await tester.pump();
+
+      // Select duration
+      await tester.tap(find.text('20S'));
+      await tester.pump();
+
+      // Tap Save
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+      expect(find.text('ELEVENLABS SETTINGS'), findsNothing);
+    });
+
+    testWidgets('ElevenLabs API generation success flow', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      _MockHttpClient.mockStatusCode = 200;
+      _MockHttpClient.mockResponseBytes = [1, 2, 3, 4];
+      _MockHttpClient.mockNetworkError = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BangerScreen(
+            onBack: () {},
+            tripName: "Cabo Fail '23",
+            lyrics: "Some lyrics",
+          ),
+        ),
+      );
+
+      // Set API key
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'Enter ElevenLabs API key...'),
+        'fake-elevenlabs-key',
+      );
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+
+      // Tap Press Record
+      await tester.tap(find.text('PRESS RECORD'));
+      await tester.pump();
+
+      // Wait for generation and process microtasks
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('NOW PLAYING'), findsOneWidget);
+    });
+
+    testWidgets('ElevenLabs API generation error and exception flows', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      _MockHttpClient.mockStatusCode = 400;
+      _MockHttpClient.mockResponseBody = '{"detail": {"status": "INVALID_PROMPT", "message": "Prompt too long"}}';
+      _MockHttpClient.mockResponseBytes = null;
+      _MockHttpClient.mockNetworkError = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BangerScreen(
+            onBack: () {},
+            tripName: "Cabo Fail '23",
+            lyrics: "Some lyrics",
+          ),
+        ),
+      );
+
+      // Set API key
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byWidgetPredicate((widget) => widget is TextField && widget.decoration?.hintText == 'Enter ElevenLabs API key...'),
+        'fake-elevenlabs-key',
+      );
+      await tester.tap(find.text('SAVE'));
+      await tester.pumpAndSettle();
+
+      // Generate
+      await tester.tap(find.text('PRESS RECORD'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Should show GENERATION FAILED dialog
+      expect(find.text('GENERATION FAILED'), findsOneWidget);
+      await tester.tap(find.text('DISMISS'));
+      await tester.pumpAndSettle();
+
+      // Exception flow
+      _MockHttpClient.mockNetworkError = true;
+
+      // Generate again
+      await tester.tap(find.text('PRESS RECORD'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('GENERATION FAILED'), findsOneWidget);
+      await tester.tap(find.text('DISMISS'));
+      await tester.pumpAndSettle();
+    });
   });
 }
 
@@ -306,25 +591,46 @@ class _MockHttpOverrides extends HttpOverrides {
 }
 
 class _MockHttpClient implements HttpClient {
+  static int mockStatusCode = 200;
+  static String mockResponseBody = '';
+  static List<int>? mockResponseBytes;
+  static bool mockNetworkError = false;
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
-    if (invocation.memberName == #getUrl || invocation.memberName == #get) {
-      return Future.value(_MockHttpClientRequest());
+    final Uri? url = invocation.positionalArguments.firstWhere(
+      (arg) => arg is Uri,
+      orElse: () => null,
+    ) as Uri?;
+    if (mockNetworkError && url != null && (url.host == 'api.anthropic.com' || url.host == 'api.elevenlabs.io')) {
+      return Future<HttpClientRequest>.error(const SocketException('Connection failed'));
     }
-    return null;
+    return Future.value(_MockHttpClientRequest(url));
   }
 }
 
 class _MockHttpClientRequest implements HttpClientRequest {
+  final Uri? url;
+  _MockHttpClientRequest(this.url);
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
+    if (invocation.isGetter) {
+      if (invocation.memberName == #headers) {
+        return _MockHttpHeaders();
+      }
+      if (invocation.memberName == #encoding) {
+        return utf8;
+      }
+      return null;
+    }
+    if (invocation.isSetter) {
+      return null;
+    }
     if (invocation.memberName == #close) {
-      return Future.value(_MockHttpClientResponse());
+      return Future.value(_MockHttpClientResponse(url));
     }
-    if (invocation.memberName == #headers) {
-      return _MockHttpHeaders();
-    }
-    return null;
+    return Future.value();
   }
 }
 
@@ -334,6 +640,9 @@ class _MockHttpHeaders implements HttpHeaders {
 }
 
 class _MockHttpClientResponse extends Stream<List<int>> implements HttpClientResponse {
+  final Uri? url;
+  _MockHttpClientResponse(this.url);
+
   static const List<int> _transparentImage = [
     0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
     0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
@@ -343,12 +652,35 @@ class _MockHttpClientResponse extends Stream<List<int>> implements HttpClientRes
     0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82
   ];
 
+  bool get _isApiRequest => url != null && (url!.host == 'api.anthropic.com' || url!.host == 'api.elevenlabs.io');
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
-    if (invocation.memberName == #statusCode) return 200;
-    if (invocation.memberName == #contentLength) return _transparentImage.length;
-    if (invocation.memberName == #headers) return _MockHttpHeaders();
-    if (invocation.memberName == #compressionState) return HttpClientResponseCompressionState.notCompressed;
+    if (invocation.isGetter) {
+      if (invocation.memberName == #statusCode) {
+        return _isApiRequest ? _MockHttpClient.mockStatusCode : 200;
+      }
+      if (invocation.memberName == #contentLength) {
+        if (_isApiRequest) {
+          if (_MockHttpClient.mockResponseBytes != null) {
+            return _MockHttpClient.mockResponseBytes!.length;
+          }
+          return _MockHttpClient.mockResponseBody.codeUnits.length;
+        }
+        return _transparentImage.length;
+      }
+      if (invocation.memberName == #headers) return _MockHttpHeaders();
+      if (invocation.memberName == #compressionState) return HttpClientResponseCompressionState.notCompressed;
+      if (invocation.memberName == #isRedirect) return false;
+      if (invocation.memberName == #persistentConnection) return false;
+      if (invocation.memberName == #reasonPhrase) return 'OK';
+      if (invocation.memberName == #redirects) return const <RedirectInfo>[];
+      if (invocation.memberName == #cookies) return const <Cookie>[];
+      return null;
+    }
+    if (invocation.isSetter) {
+      return null;
+    }
     return null;
   }
 
@@ -359,7 +691,14 @@ class _MockHttpClientResponse extends Stream<List<int>> implements HttpClientRes
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    return Stream<List<int>>.fromIterable([_transparentImage]).listen(
+    List<int> responseBytes = _transparentImage;
+    if (_isApiRequest) {
+      final List<int> bytes = _MockHttpClient.mockResponseBytes ?? _MockHttpClient.mockResponseBody.codeUnits;
+      if (bytes.isNotEmpty) {
+        responseBytes = bytes;
+      }
+    }
+    return Stream<List<int>>.fromIterable([responseBytes]).listen(
       onData,
       onError: onError,
       onDone: onDone,
