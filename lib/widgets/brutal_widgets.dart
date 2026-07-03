@@ -23,7 +23,7 @@ class BrutalCard extends StatelessWidget {
     this.showShadow = true,
     this.hasTape = false,
     this.tapeRotationDegrees = 3.0,
-    this.borderWidth = 3.0,
+    this.borderWidth = 1.0, // Thinner border default
     this.borderRadius,
     this.padding,
     this.onTap,
@@ -34,7 +34,7 @@ class BrutalCard extends StatelessWidget {
     Widget card = Container(
       decoration: BrutalTheme.brutalDecoration(
         color: color,
-        borderRadius: borderRadius ?? BorderRadius.zero,
+        borderRadius: borderRadius ?? BorderRadius.circular(10.0), // Rounded corners default
         borderWidth: borderWidth,
         showShadow: showShadow,
       ),
@@ -72,9 +72,9 @@ class BrutalCard extends StatelessWidget {
                   width: 60,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.85),
+                    color: const Color(0x99D6BE8C), // Translucent beige tape
                     border: Border.all(
-                      color: Colors.grey.shade400,
+                      color: const Color(0x40B49B69), // Soft border
                       width: 1,
                     ),
                   ),
@@ -102,7 +102,7 @@ class BrutalButton extends StatefulWidget {
     Key? key,
     required this.child,
     this.onPressed,
-    this.color = BrutalTheme.yellow,
+    this.color = BrutalTheme.primary, // Default to accent red
     this.height = 54.0,
     this.width,
     this.fullWidth = false,
@@ -136,7 +136,7 @@ class _BrutalButtonState extends State<BrutalButton> {
 
   @override
   Widget build(BuildContext context) {
-    final double offsetVal = _isPressed ? 4.0 : 0.0;
+    final double offsetVal = _isPressed ? 2.0 : 0.0;
     
     Widget buttonContent = AnimatedContainer(
       duration: const Duration(milliseconds: 50),
@@ -145,6 +145,13 @@ class _BrutalButtonState extends State<BrutalButton> {
       transform: Matrix4.translationValues(offsetVal, offsetVal, 0.0),
       decoration: BrutalTheme.brutalDecoration(
         color: widget.color,
+        borderRadius: BorderRadius.circular(14.0), // Rounded corners for button
+        borderWidth: 1.0,
+        borderColor: const Color(0xFFE1D4B6),
+        shadowOffset: const Offset(0, 8),
+        shadowColor: widget.color == BrutalTheme.primary
+            ? const Color(0xB2C05B3E)
+            : const Color(0x59433729),
         showShadow: !_isPressed,
       ),
       alignment: Alignment.center,
@@ -156,7 +163,6 @@ class _BrutalButtonState extends State<BrutalButton> {
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: Container(
-        // Transparent spacer container to maintain layout when offset changes
         color: Colors.transparent,
         padding: const EdgeInsets.only(right: 4.0, bottom: 4.0),
         child: buttonContent,
@@ -177,7 +183,7 @@ class DymoLabel extends StatelessWidget {
     required this.text,
     this.fontSize = 12.0,
     this.backgroundColor = BrutalTheme.inkBlack,
-    this.textColor = Colors.white,
+    this.textColor = const Color(0xFFFFF8EC),
     this.padding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
   }) : super(key: key);
 
@@ -186,15 +192,16 @@ class DymoLabel extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
+        borderRadius: BorderRadius.circular(4.0),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x33FFFFFF),
+            color: Color(0x1AFFFFFF),
             offset: Offset(1, 1),
             blurRadius: 0,
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: Color(0xCC000000),
+            color: Color(0x33000000),
             offset: Offset(-1, -1),
             blurRadius: 0,
             spreadRadius: 0,
@@ -237,9 +244,9 @@ class TapeOverlay extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
+          color: const Color(0x99D6BE8C), // Translucent beige tape
           border: Border.all(
-            color: Colors.grey.shade300,
+            color: const Color(0x40B49B69), // Soft border
             width: 1,
           ),
         ),

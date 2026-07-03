@@ -109,7 +109,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
           insetPadding: const EdgeInsets.all(24),
           child: SingleChildScrollView(
             child: BrutalCard(
-              color: BrutalTheme.backgroundLight,
+              color: BrutalTheme.card,
               padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -119,7 +119,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                   const SizedBox(height: 16),
                   Text(
                     'Spill the tea. Document what happened.',
-                    style: GoogleFonts.courierPrime(
+                    style: GoogleFonts.karla(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: BrutalTheme.inkBlack,
@@ -139,12 +139,12 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                   Container(
                     decoration: BrutalTheme.brutalDecoration(
                       color: Colors.white,
-                      borderWidth: 2.0,
+                      borderWidth: 1.0,
                       showShadow: false,
                     ),
                     child: TextField(
                       controller: authorController,
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.karla(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.inkBlack,
@@ -169,15 +169,14 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                   Container(
                     decoration: BrutalTheme.brutalDecoration(
                       color: Colors.white,
-                      borderWidth: 2.0,
+                      borderWidth: 1.0,
                       showShadow: false,
                     ),
                     child: TextField(
                       controller: textController,
                       maxLines: 3,
-                      style: GoogleFonts.courierPrime(
+                      style: GoogleFonts.karla(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
                         color: BrutalTheme.inkBlack,
                       ),
                       decoration: const InputDecoration(
@@ -219,7 +218,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                           },
                           child: Text(
                             'SPILL IT',
-                            style: GoogleFonts.spaceMono(
+                            style: GoogleFonts.karla(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -229,11 +228,11 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: BrutalButton(
-                          color: Colors.white,
+                          color: BrutalTheme.yellow,
                           onPressed: () => Navigator.pop(context),
                           child: Text(
                             'CANCEL',
-                            style: GoogleFonts.spaceMono(
+                            style: GoogleFonts.karla(
                               color: BrutalTheme.inkBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -265,9 +264,9 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
         preferredSize: const Size.fromHeight(66.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: BrutalTheme.paper2,
             border: Border(
-              bottom: BorderSide(color: BrutalTheme.inkBlack, width: 3.0),
+              bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
             ),
           ),
           child: SafeArea(
@@ -294,8 +293,8 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                     child: Center(
                       child: Text(
                         "${widget.tripName.toUpperCase()} EVIDENCE",
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 18,
+                        style: GoogleFonts.instrumentSerif(
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: BrutalTheme.inkBlack,
                         ),
@@ -340,7 +339,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                     const SizedBox(width: 8),
                     Text(
                       'ADD THE TEA',
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.karla(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -359,15 +358,17 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
   Widget _buildMapSection() {
     return Container(
       height: 240,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.grey,
-        border: const Border(
-          bottom: BorderSide(color: BrutalTheme.inkBlack, width: 3.0),
+        border: Border(
+          bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
         ),
         image: DecorationImage(
-          image: NetworkImage(widget.mapImageUrl),
+          image: NetworkImage(
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCc1O6C08mrvt95HE72xNmasi9USWsLzudZ6cJ4daYEzP00r8WZyGTGOswVy5Rp9NOQYdCSUUiEPWxlXt12mS04t5KpWceFiA3tsou2zx8WgajfsEoQLFFQ7gBifUslUPasmMiRVyGfl4AckykcHEIjcWD4KXEF6OZbVdeP37vb2tbvRysbSyZLe3zy4sXMcMBYxgihyzGBswCogeH3aDyclR0AGtWq1E9C7KwCf1dzoC7oNbd0oTDywqP-c6-BQF-_TsvL56eBePg',
+          ),
           fit: BoxFit.cover,
-          colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.multiply),
+          colorFilter: ColorFilter.mode(Colors.black26, BlendMode.multiply),
         ),
       ),
       child: Stack(
@@ -392,16 +393,16 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                       child: Container(
                         decoration: BrutalTheme.brutalDecoration(
                           color: BrutalTheme.primary,
-                          borderWidth: 2.0,
+                          borderWidth: 1.0,
                           showShadow: true,
-                          shadowOffset: const Offset(2, 2),
+                          shadowOffset: const Offset(1, 2),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                         child: Text(
                           pin.label.toUpperCase(),
-                          style: GoogleFonts.spaceMono(
+                          style: GoogleFonts.karla(
                             color: Colors.white,
-                            fontSize: 9,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -413,8 +414,9 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                       size: 36,
                       shadows: [
                         Shadow(
-                          color: BrutalTheme.inkBlack,
-                          offset: Offset(2, 2),
+                          color: Color(0x66433729),
+                          offset: Offset(1, 2),
+                          blurRadius: 4.0,
                         ),
                       ],
                     ),
@@ -437,8 +439,8 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
           top: 0,
           bottom: 0,
           child: Container(
-            width: 4,
-            color: BrutalTheme.inkBlack,
+            width: 2,
+            color: const Color(0xFFE7DBC0),
           ),
         ),
         
@@ -468,7 +470,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                             height: 120,
                             margin: const EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
-                              border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                              border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                               image: DecorationImage(
                                 image: NetworkImage(memory.imageUrl!),
                                 fit: BoxFit.cover,
@@ -480,13 +482,14 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                             margin: const EdgeInsets.only(bottom: 6),
                             decoration: BoxDecoration(
                               color: memory.iconBg,
-                              border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
+                              border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
+                              borderRadius: BorderRadius.circular(4.0),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             child: Text(
                               memory.category!.toUpperCase(),
-                              style: GoogleFonts.courierPrime(
-                                fontSize: 10,
+                              style: GoogleFonts.spaceMono(
+                                fontSize: 9,
                                 fontWeight: FontWeight.bold,
                                 color: memory.iconColor,
                               ),
@@ -494,10 +497,9 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                           ),
                         Text(
                           memory.text,
-                          style: GoogleFonts.courierPrime(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            height: 1.3,
+                          style: GoogleFonts.karla(
+                            fontSize: 14.5,
+                            height: 1.45,
                             color: BrutalTheme.inkBlack,
                           ),
                         ),
@@ -508,7 +510,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
               }).toList(),
               const SizedBox(height: 10),
               Text(
-                '--- END OF TAPE ---',
+                '--- END OF SCRAPBOOK ---',
                 style: GoogleFonts.spaceMono(
                   color: BrutalTheme.graphite,
                   fontWeight: FontWeight.bold,
@@ -544,9 +546,9 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
           margin: const EdgeInsets.only(left: 8.0, top: 12.0),
           decoration: BrutalTheme.brutalDecoration(
             color: iconBg,
-            borderWidth: 2.0,
+            borderWidth: 1.0,
             showShadow: true,
-            shadowOffset: const Offset(2, 2),
+            shadowOffset: const Offset(1, 2),
           ),
           child: Icon(icon, color: iconColor, size: 16),
         ),
@@ -554,7 +556,7 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
         // Card content
         Expanded(
           child: BrutalCard(
-            color: flash ? BrutalTheme.yellow : Colors.white,
+            color: flash ? BrutalTheme.yellow : BrutalTheme.card,
             rotationDegrees: rotationDegrees,
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -565,31 +567,27 @@ class _EvidenceScreenState extends State<EvidenceScreen> {
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: BrutalTheme.inkBlack,
-                        width: 1.5,
+                        color: Color(0xFFE7DBC0),
+                        width: 1.0,
                       ),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        color: BrutalTheme.inkBlack,
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        child: Text(
-                          time,
-                          style: GoogleFonts.spaceMono(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Text(
+                        time,
+                        style: GoogleFonts.spaceMono(
+                          color: BrutalTheme.graphite,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         author,
                         style: GoogleFonts.caveat(
                           color: BrutalTheme.primary,
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

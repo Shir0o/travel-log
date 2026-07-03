@@ -264,9 +264,9 @@ class _MainShellState extends State<MainShell> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: BrutalTheme.backgroundLight,
+          color: BrutalTheme.paper2, // secondary cream
           border: Border(
-            top: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+            top: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
           ),
         ),
         padding: const EdgeInsets.only(bottom: 12.0, top: 8.0, left: 16.0, right: 16.0),
@@ -300,7 +300,7 @@ class _MainShellState extends State<MainShell> {
     required String label,
   }) {
     final bool isActive = _currentTabIndex == index;
-    final Color itemColor = isActive ? BrutalTheme.inkBlack : BrutalTheme.graphite;
+    final Color itemColor = isActive ? BrutalTheme.primary : BrutalTheme.graphite;
     
     return GestureDetector(
       onTap: () => _navigateToTab(index),
@@ -316,8 +316,9 @@ class _MainShellState extends State<MainShell> {
           Text(
             label.toUpperCase(),
             style: GoogleFonts.spaceMono(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
+              letterSpacing: 0.8,
               color: itemColor,
             ),
           ),
@@ -339,19 +340,18 @@ class ProfileScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(66.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: BrutalTheme.backgroundLight,
+            color: BrutalTheme.paper2,
             border: Border(
-              bottom: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+              bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
             ),
           ),
           alignment: Alignment.center,
           child: SafeArea(
             child: Text(
               'MY PROFILE',
-              style: GoogleFonts.spaceMono(
-                fontSize: 22,
+              style: GoogleFonts.instrumentSerif(
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
-                letterSpacing: -1.0,
                 color: BrutalTheme.inkBlack,
               ),
             ),
@@ -362,7 +362,7 @@ class ProfileScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: BrutalCard(
-            color: Colors.white,
+            color: BrutalTheme.card,
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -372,7 +372,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 90,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: BrutalTheme.inkBlack, width: 3),
+                    border: Border.all(color: const Color(0xFFE1D4B6), width: 1.5),
                     image: const DecorationImage(
                       image: NetworkImage(
                         'https://lh3.googleusercontent.com/aida-public/AB6AXuBq7EdCTPva73qwA0b7XoYyRoEyBXhGAw90E67gUzc0psJTDFanyVZs3kELGIGm_4vjezb5wLlMQMocryuJkkDRatqU5kQvwmCTg-whLJk3Q5Qh4BzcImyTZ4bxX-KAYh_xIBpNO8NYsdHnvkNDCoM5ECzF-GZk7AWbGz_pvX79MKljzYpXzfPiUi821FTgllT3Eq9eDcTpdC3px5WggNXfh5Hby8W8K1e9LLYMBRpPicZfj35Fb_Rsjzk4CUyamP1MJ30tuxdMt6Y',
@@ -384,8 +384,8 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   '@ALEX_CHAOS',
-                  style: GoogleFonts.spaceMono(
-                    fontSize: 20,
+                  style: GoogleFonts.instrumentSerif(
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: BrutalTheme.inkBlack,
                   ),
@@ -393,9 +393,8 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'Trip Lead & Seagull Fighter',
-                  style: GoogleFonts.courierPrime(
+                  style: GoogleFonts.karla(
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
                     color: BrutalTheme.graphite,
                   ),
                 ),

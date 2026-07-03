@@ -456,17 +456,10 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
         preferredSize: const Size.fromHeight(66.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: BrutalTheme.backgroundLight,
+            color: BrutalTheme.paper2,
             border: Border(
-              bottom: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+              bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: BrutalTheme.inkBlack,
-                offset: Offset(0, 2),
-                blurRadius: 0,
-              ),
-            ],
           ),
           child: SafeArea(
             child: Padding(
@@ -480,8 +473,9 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                       height: 40,
                       decoration: BrutalTheme.brutalDecoration(
                         color: BrutalTheme.yellow,
-                        borderWidth: 3.0,
+                        borderWidth: 1.0,
                         showShadow: true,
+                        shadowOffset: const Offset(1, 2),
                       ),
                       child: const Icon(Icons.arrow_back, color: BrutalTheme.inkBlack),
                     ),
@@ -494,8 +488,9 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                       height: 40,
                       decoration: BrutalTheme.brutalDecoration(
                         color: BrutalTheme.cyan,
-                        borderWidth: 3.0,
+                        borderWidth: 1.0,
                         showShadow: true,
+                        shadowOffset: const Offset(1, 2),
                       ),
                       child: const Icon(Icons.settings, color: BrutalTheme.inkBlack),
                     ),
@@ -504,8 +499,8 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                     child: Center(
                       child: Text(
                         widget.tripName.toUpperCase(),
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 20,
+                        style: GoogleFonts.instrumentSerif(
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: BrutalTheme.inkBlack,
                         ),
@@ -519,7 +514,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                         height: 32,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                          border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                           image: DecorationImage(
                             image: NetworkImage(avatars[0]),
                             fit: BoxFit.cover,
@@ -532,7 +527,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                         height: 32,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                          border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                           image: DecorationImage(
                             image: NetworkImage(avatars[1]),
                             fit: BoxFit.cover,
@@ -574,7 +569,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 decoration: BoxDecoration(
                   color: BrutalTheme.backgroundLight.withOpacity(0.9),
                   border: const Border(
-                    bottom: BorderSide(color: Colors.black12, width: 2.0),
+                    bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
                   ),
                 ),
                 child: Row(
@@ -604,7 +599,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                     child: Text(
                       _note1Text,
                       style: GoogleFonts.caveat(
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.inkBlack,
                       ),
@@ -620,7 +615,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               child: Opacity(
                 opacity: 0.35,
                 child: BrutalCard(
-                  color: Colors.white,
+                  color: BrutalTheme.card,
                   rotationDegrees: -12.0,
                   padding: const EdgeInsets.all(8),
                   child: SizedBox(
@@ -628,7 +623,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                     child: Text(
                       _note2Text,
                       style: GoogleFonts.caveat(
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.inkBlack,
                       ),
@@ -644,17 +639,10 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               right: 0,
               child: Container(
                 decoration: const BoxDecoration(
-                  color: BrutalTheme.backgroundLight,
+                  color: BrutalTheme.paper2,
                   border: Border(
-                    top: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+                    top: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: BrutalTheme.inkBlack,
-                      offset: Offset(0, -4),
-                      blurRadius: 0,
-                    ),
-                  ],
                 ),
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -672,7 +660,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                           const SizedBox(width: 8),
                           Text(
                             _isGenerating ? 'GENERATING...' : 'GENERATE VERSE',
-                            style: GoogleFonts.spaceMono(
+                            style: GoogleFonts.karla(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -692,7 +680,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                         children: [
                           Text(
                             'PRODUCE TRACK',
-                            style: GoogleFonts.spaceMono(
+                            style: GoogleFonts.karla(
                               color: BrutalTheme.inkBlack,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -723,7 +711,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                     child: Transform.rotate(
                       angle: -3.0 * 3.14159 / 180,
                       child: BrutalCard(
-                        color: Colors.white,
+                        color: BrutalTheme.card,
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -734,7 +722,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                               _note3Text,
                               style: GoogleFonts.caveat(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 16,
                                 color: BrutalTheme.inkBlack,
                               ),
                             ),
@@ -755,7 +743,8 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
     return Container(
       decoration: BrutalTheme.brutalDecoration(
         color: Colors.white,
-        borderWidth: 2.0,
+        borderWidth: 1.0,
+        borderRadius: BorderRadius.circular(6.0),
         showShadow: false,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -763,7 +752,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
         ? Icon(icon, size: 16, color: BrutalTheme.inkBlack)
         : Text(
             label,
-            style: GoogleFonts.spaceMono(
+            style: GoogleFonts.karla(
               fontWeight: FontWeight.bold,
               fontSize: 12,
               color: BrutalTheme.inkBlack,
@@ -795,10 +784,9 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               const SizedBox(height: 8),
               Text(
                 _getVerse1TextForTrip(widget.tripName),
-                style: GoogleFonts.courierPrime(
-                  fontSize: 16,
-                  height: 1.5,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.instrumentSerif(
+                  fontSize: 18,
+                  height: 1.45,
                   color: BrutalTheme.inkBlack,
                 ),
               ),
@@ -817,15 +805,16 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 ),
                 const SizedBox(width: 2),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     color: BrutalTheme.cyan,
-                    border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
+                    border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
+                    borderRadius: BorderRadius.circular(4.0),
                   ),
                   child: Text(
                     _note3Author,
-                    style: GoogleFonts.spaceMono(
-                      fontSize: 10,
+                    style: GoogleFonts.karla(
+                      fontSize: 11,
                       fontWeight: FontWeight.bold,
                       color: BrutalTheme.inkBlack,
                     ),
@@ -866,20 +855,18 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
               if (_charCount > 0)
                 Text(
                   currentRevealText,
-                  style: GoogleFonts.courierPrime(
-                    fontSize: 16,
-                    height: 1.5,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.instrumentSerif(
+                    fontSize: 18,
+                    height: 1.45,
                     color: BrutalTheme.inkBlack,
                   ),
                 )
               else
                 Text(
                   "...\n\n\n",
-                  style: GoogleFonts.courierPrime(
-                    fontSize: 16,
-                    height: 1.5,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.instrumentSerif(
+                    fontSize: 18,
+                    height: 1.45,
                     color: Colors.transparent,
                   ),
                 ),
@@ -899,15 +886,16 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                   ),
                   const SizedBox(width: 2),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: BrutalTheme.primary,
-                      border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
+                      border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
                       'AI Magic',
-                      style: GoogleFonts.spaceMono(
-                        fontSize: 10,
+                      style: GoogleFonts.karla(
+                        fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -941,10 +929,9 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
           const SizedBox(height: 8),
           Text(
             "Type here or generate...",
-            style: GoogleFonts.courierPrime(
-              fontSize: 16,
+            style: GoogleFonts.instrumentSerif(
+              fontSize: 18,
               fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.bold,
               color: BrutalTheme.graphite,
             ),
           ),
@@ -958,8 +945,8 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: BrutalCard(
-        color: const Color(0xFFFFB3D9), // Light neon pinkish red
-        borderWidth: 3.0,
+        color: const Color(0xFFFCD7D7), // Softer red highlight
+        borderWidth: 1.0,
         showShadow: true,
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -971,7 +958,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 const SizedBox(width: 8),
                 Text(
                   "GENERATION ERROR",
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.karla(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     color: BrutalTheme.inkBlack,
@@ -982,7 +969,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
             const SizedBox(height: 8),
             Text(
               _errorMessage!,
-              style: GoogleFonts.spaceMono(
+              style: GoogleFonts.karla(
                 fontSize: 12,
                 color: BrutalTheme.inkBlack,
               ),

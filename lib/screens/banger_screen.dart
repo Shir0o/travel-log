@@ -178,9 +178,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
             return Dialog(
               backgroundColor: Colors.transparent,
               child: BrutalCard(
-                color: BrutalTheme.backgroundLight,
-                borderWidth: 4.0,
-                showShadow: true,
+                color: BrutalTheme.card,
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -188,8 +186,8 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                   children: [
                     Text(
                       'ELEVENLABS SETTINGS',
-                      style: GoogleFonts.spaceMono(
-                        fontSize: 20,
+                      style: GoogleFonts.instrumentSerif(
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.inkBlack,
                       ),
@@ -199,7 +197,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     Text(
                       'API KEY',
                       style: GoogleFonts.spaceMono(
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.graphite,
                       ),
@@ -208,13 +206,13 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     Container(
                       decoration: BrutalTheme.brutalDecoration(
                         color: Colors.white,
-                        borderWidth: 2.0,
+                        borderWidth: 1.0,
                         showShadow: false,
                       ),
                       child: TextField(
                         controller: keyController,
                         obscureText: true,
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.karla(
                           fontSize: 14,
                           color: BrutalTheme.inkBlack,
                         ),
@@ -229,7 +227,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     Text(
                       'TRACK DURATION',
                       style: GoogleFonts.spaceMono(
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: BrutalTheme.graphite,
                       ),
@@ -252,13 +250,14 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                                 height: 36,
                                 decoration: BrutalTheme.brutalDecoration(
                                   color: isSelected ? BrutalTheme.yellow : Colors.white,
-                                  borderWidth: 2.0,
+                                  borderWidth: 1.0,
+                                  borderRadius: BorderRadius.circular(6.0),
                                   showShadow: false,
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '${sec}S',
-                                  style: GoogleFonts.spaceMono(
+                                  style: GoogleFonts.karla(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     color: BrutalTheme.inkBlack,
@@ -275,11 +274,11 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       children: [
                         Expanded(
                           child: BrutalButton(
-                            color: Colors.white,
+                            color: BrutalTheme.yellow,
                             onPressed: () => Navigator.of(context).pop(),
                             child: Text(
                               'CANCEL',
-                              style: GoogleFonts.spaceMono(
+                              style: GoogleFonts.karla(
                                   fontWeight: FontWeight.bold,
                                   color: BrutalTheme.inkBlack),
                             ),
@@ -297,12 +296,12 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                               Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  backgroundColor: BrutalTheme.cyan,
+                                  backgroundColor: BrutalTheme.primary,
                                   content: Text(
                                     'ELEVENLABS SETTINGS SAVED!',
-                                    style: GoogleFonts.spaceMono(
+                                    style: GoogleFonts.karla(
                                       fontWeight: FontWeight.bold,
-                                      color: BrutalTheme.inkBlack,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   behavior: SnackBarBehavior.floating,
@@ -312,7 +311,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                             },
                             child: Text(
                               'SAVE',
-                              style: GoogleFonts.spaceMono(
+                              style: GoogleFonts.karla(
                                   fontWeight: FontWeight.bold,
                                   color: BrutalTheme.inkBlack),
                             ),
@@ -571,9 +570,9 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
         preferredSize: const Size.fromHeight(66.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: BrutalTheme.backgroundLight,
+            color: BrutalTheme.paper2,
             border: Border(
-              bottom: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+              bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
             ),
           ),
           child: SafeArea(
@@ -589,19 +588,18 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       height: 40,
                       decoration: BrutalTheme.brutalDecoration(
                         color: Colors.white,
-                        borderWidth: 3.0,
+                        borderWidth: 1.0,
                         showShadow: true,
-                        shadowOffset: const Offset(3, 3),
+                        shadowOffset: const Offset(1, 2),
                       ),
                       child: const Icon(Icons.arrow_back, color: BrutalTheme.inkBlack),
                     ),
                   ),
                   Text(
                     'THE STUDIO',
-                    style: GoogleFonts.spaceMono(
+                    style: GoogleFonts.instrumentSerif(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: -1.0,
                       color: BrutalTheme.inkBlack,
                     ),
                   ),
@@ -612,9 +610,9 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       height: 40,
                       decoration: BrutalTheme.brutalDecoration(
                         color: BrutalTheme.cyan,
-                        borderWidth: 3.0,
+                        borderWidth: 1.0,
                         showShadow: true,
-                        shadowOffset: const Offset(3, 3),
+                        shadowOffset: const Offset(1, 2),
                       ),
                       child: const Icon(Icons.settings, color: BrutalTheme.inkBlack),
                     ),
@@ -653,29 +651,30 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
         // Dropdown Vibe Label
         Text(
           'Select Vibe:',
-          style: GoogleFonts.spaceMono(
+          style: GoogleFonts.karla(
             fontSize: 14,
             fontWeight: FontWeight.bold,
             color: BrutalTheme.inkBlack,
           ),
         ),
         const SizedBox(height: 8),
-        // Dymo Dropdown selector container
         Container(
           decoration: BrutalTheme.brutalDecoration(
-            color: BrutalTheme.inkBlack,
+            color: BrutalTheme.card,
+            borderWidth: 1.0,
             showShadow: true,
-            shadowColor: BrutalTheme.inkBlack,
+            shadowOffset: const Offset(1, 2),
+            shadowColor: const Color(0x59433729),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: _selectedVibe,
-              dropdownColor: BrutalTheme.inkBlack,
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+              dropdownColor: BrutalTheme.card,
+              icon: const Icon(Icons.arrow_drop_down, color: BrutalTheme.inkBlack),
               isExpanded: true,
-              style: GoogleFonts.spaceMono(
-                color: Colors.white,
+              style: GoogleFonts.karla(
+                color: BrutalTheme.inkBlack,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -705,7 +704,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
         
         // Record Button
         BrutalButton(
-          color: BrutalTheme.yellow,
+          color: BrutalTheme.primary,
           fullWidth: true,
           height: 72.0,
           onPressed: _startRecordFlow,
@@ -714,16 +713,16 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
             children: [
               const Icon(
                 Icons.radio_button_checked,
-                color: BrutalTheme.primary,
+                color: Colors.white,
                 size: 32,
               ),
               const SizedBox(width: 12),
               Text(
                 'PRESS RECORD',
-                style: GoogleFonts.spaceMono(
-                  fontSize: 24,
+                style: GoogleFonts.karla(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: BrutalTheme.inkBlack,
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -735,7 +734,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
 
   Widget _buildCassetteWidget() {
     return BrutalCard(
-      color: Colors.white,
+      color: BrutalTheme.card,
       showShadow: true,
       child: AspectRatio(
         aspectRatio: 3 / 2,
@@ -746,8 +745,8 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
               // Cassette inner gray body
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  border: Border.all(color: BrutalTheme.inkBlack, width: 3),
+                  color: const Color(0xFFF1E6CD),
+                  border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -761,14 +760,14 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       height: 44,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(color: BrutalTheme.inkBlack, width: 3),
+                        border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
                       ),
                       child: Center(
                         child: Container(
                           width: 60,
                           height: 16,
                           decoration: BoxDecoration(
-                            color: BrutalTheme.inkBlack.withOpacity(0.15),
+                            color: BrutalTheme.inkBlack.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
@@ -790,7 +789,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     child: Container(
                       decoration: BrutalTheme.brutalDecoration(
                         color: BrutalTheme.yellow,
-                        borderWidth: 2.0,
+                        borderWidth: 1.0,
                         showShadow: false,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -819,7 +818,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
       height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: BrutalTheme.inkBlack, width: 3.5),
+        border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
         color: Colors.white,
       ),
       child: Center(
@@ -845,8 +844,8 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           Text(
             'Cooking the beat...',
             textAlign: TextAlign.center,
-            style: GoogleFonts.spaceMono(
-              fontSize: 22,
+            style: GoogleFonts.instrumentSerif(
+              fontSize: 24,
               fontWeight: FontWeight.bold,
               color: BrutalTheme.inkBlack,
             ),
@@ -855,7 +854,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           
           // Waveform Graphic Box
           BrutalCard(
-            color: Colors.white,
+            color: BrutalTheme.card,
             padding: const EdgeInsets.all(12),
             child: SizedBox(
               height: 120,
@@ -866,7 +865,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 1.5),
                       height: math.max(6.0, h * 100),
-                      color: BrutalTheme.inkBlack,
+                      color: BrutalTheme.primary,
                     ),
                   );
                 }).toList(),
@@ -879,9 +878,8 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           Text(
             'Synthesizing vocals...',
             textAlign: TextAlign.center,
-            style: GoogleFonts.courierPrime(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.karla(
+              fontSize: 15,
               color: BrutalTheme.graphite,
             ),
           ),
@@ -900,7 +898,9 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           child: Container(
             decoration: BrutalTheme.brutalDecoration(
               color: BrutalTheme.inkBlack,
+              borderWidth: 1.0,
               showShadow: true,
+              shadowOffset: const Offset(1, 2),
             ),
             padding: const EdgeInsets.all(16.0),
             child: Stack(
@@ -958,7 +958,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: BrutalTheme.inkBlack, width: 3.5),
+                            border: Border.all(color: BrutalTheme.inkBlack, width: 1.5),
                             image: const DecorationImage(
                               image: NetworkImage(
                                 'https://lh3.googleusercontent.com/aida-public/AB6AXuClrsy9bpJ_dZjzLwUERdlOOT_9RIMz2AGSf5vn3mat7Hcqoc1Uw_DiFJl__JQrsIWZ7u_nEXa8iSGP1H4AYiO9obrwZtJcxoejz3COVRQQAy3s0JG4bFfvWW0k9TDLOrjrMRRBQB4eRjpmetKLS3z0MRUQt1Sv9rjSj864kGbTxHiyPwYmoNcRMPWQNNrksuj8RLE69I9tfcY3SIHbfO0-la0CcBoTn3c4Y4fFMT-cifzggD0dQsfqe1AibKVNylGLLJ9nZXBDE0M',
@@ -972,7 +972,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                             height: 14,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
-                              color: BrutalTheme.backgroundLight,
+                              color: BrutalTheme.paper2,
                             ),
                           ),
                         ),
@@ -1021,7 +1021,8 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                   height: 16,
                   decoration: BrutalTheme.brutalDecoration(
                     color: Colors.white,
-                    borderWidth: 2.5,
+                    borderWidth: 1.0,
+                    borderRadius: BorderRadius.circular(4.0),
                     showShadow: false,
                   ),
                   alignment: Alignment.centerLeft,
@@ -1059,12 +1060,12 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
             ),
           ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 12),
         
         // Karaoke Lyrics Area
         BrutalCard(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          color: BrutalTheme.card,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -1072,28 +1073,29 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                 alignment: Alignment.topLeft,
                 child: DymoLabel(text: 'NOW PLAYING'),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               // Lyric Lines
               Column(
                 children: List.generate(_lyrics.length, (index) {
                   final bool isActive = index == _currentLyricIndex;
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      _lyrics[index].toUpperCase(),
+                      _lyrics[index],
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.instrumentSerif(
                         fontSize: isActive ? 20.0 : 16.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                         color: isActive 
                             ? BrutalTheme.inkBlack
                             : BrutalTheme.graphite.withOpacity(0.5),
                         shadows: isActive 
                             ? [
                                 const Shadow(
-                                  color: BrutalTheme.yellow,
-                                  offset: Offset(2, 2),
+                                  color: Color(0x66D6BE8C),
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2.0,
                                 ),
                               ]
                             : null,
@@ -1106,7 +1108,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
           ),
         ),
         
-        const SizedBox(height: 20),
+        const SizedBox(height: 12),
         
         // Playback Action Controls
         Row(
@@ -1119,8 +1121,9 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                 height: 66,
                 decoration: BrutalTheme.brutalDecoration(
                   color: Colors.white,
+                  borderWidth: 1.0,
                   showShadow: true,
-                  shadowOffset: const Offset(4, 4),
+                  shadowOffset: const Offset(1, 2),
                 ),
                 child: Icon(
                   _isPlaying ? Icons.pause : Icons.play_arrow,
@@ -1143,7 +1146,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                       margin: const EdgeInsets.only(bottom: 90, left: 16, right: 16),
                       content: Text(
                         'SHARED TO INSTAGRAM STORY!',
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.karla(
                           fontWeight: FontWeight.bold,
                           color: BrutalTheme.inkBlack,
                         ),
@@ -1158,7 +1161,7 @@ class _BangerScreenState extends State<BangerScreen> with TickerProviderStateMix
                     const SizedBox(width: 8),
                     Text(
                       'SHARE TO STORY',
-                      style: GoogleFonts.spaceMono(
+                      style: GoogleFonts.karla(
                         color: BrutalTheme.inkBlack,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

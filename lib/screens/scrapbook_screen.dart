@@ -23,28 +23,20 @@ class ScrapbookScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(66.0),
         child: Container(
           decoration: const BoxDecoration(
-            color: BrutalTheme.backgroundLight,
+            color: BrutalTheme.paper2, // secondary cream
             border: Border(
-              bottom: BorderSide(color: BrutalTheme.inkBlack, width: 4.0),
+              bottom: BorderSide(color: Color(0xFFE7DBC0), width: 1.0),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: BrutalTheme.inkBlack,
-                offset: Offset(0, 4),
-                blurRadius: 0,
-              ),
-            ],
           ),
           alignment: Alignment.center,
           child: SafeArea(
             child: Text(
               'YOUR MESSY TRIPS',
-              style: GoogleFonts.spaceMono(
+              style: GoogleFonts.instrumentSerif(
                 textStyle: const TextStyle(
                   color: BrutalTheme.inkBlack,
-                  fontSize: 22.0,
+                  fontSize: 26.0,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: -1.0,
                 ),
               ),
             ),
@@ -84,7 +76,7 @@ class ScrapbookScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Floating Action Button
+            // Floating Action Button matching the handoff + composition style
             Positioned(
               bottom: 100,
               right: 24,
@@ -106,29 +98,18 @@ class ScrapbookScreen extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  width: 76,
-                  height: 76,
+                  width: 56,
+                  height: 56,
                   decoration: BrutalTheme.brutalDecoration(
-                    color: BrutalTheme.yellow,
-                    borderRadius: BorderRadius.circular(38),
+                    color: BrutalTheme.primary,
+                    borderRadius: BorderRadius.circular(28),
+                    shadowColor: const Color(0xB2C05B3E),
+                    shadowOffset: const Offset(0, 8),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.add,
-                        color: BrutalTheme.inkBlack,
-                        size: 32,
-                      ),
-                      Text(
-                        'CHAOS',
-                        style: GoogleFonts.spaceMono(
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          color: BrutalTheme.inkBlack,
-                        ),
-                      )
-                    ],
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 28,
                   ),
                 ),
               ),
@@ -148,7 +129,7 @@ class ScrapbookScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           insetPadding: const EdgeInsets.all(24),
           child: BrutalCard(
-            color: BrutalTheme.backgroundLight,
+            color: BrutalTheme.card,
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -158,7 +139,7 @@ class ScrapbookScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   'What do you want to edit or view for this trip?',
-                  style: GoogleFonts.courierPrime(
+                  style: GoogleFonts.karla(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: BrutalTheme.inkBlack,
@@ -246,10 +227,9 @@ class ScrapbookScreen extends StatelessWidget {
             child: Container(
               height: 130,
               decoration: BoxDecoration(
-                border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                 color: Colors.white,
                 image: const DecorationImage(
-                  // Fallback load local or placeholder since it's a prototype
                   image: NetworkImage(
                     'https://lh3.googleusercontent.com/aida-public/AB6AXuB8fiqabi3I3z886FtHh2aaaVaMVgKkj0MgLXbHipZ2FHOuSCwRGDUwTyQ6pB3JqYsx8wBZOr_Msj_GvFK9Uhfft8sFF4Iwui6HiDz5OEuSL5qtpaAta6NjHP7T9T91QCxHanu6LwSP1EMIQkEDhjWAH1ndZtZD-k1EhguqhlXcWg2JqVKPrqnMNsIjfQoK0ZLZAuhlQEt6U3tUnQsISpQm11GuVTKmc1heY_3WDhX_141_Ox-JmoBjO55isYAy3zdr-Colz2fZwn8',
                   ),
@@ -265,9 +245,9 @@ class ScrapbookScreen extends StatelessWidget {
               children: [
                 Text(
                   "CABO FAIL '23",
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.instrumentSerif(
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 16,
                     color: BrutalTheme.inkBlack,
                   ),
                 ),
@@ -284,12 +264,12 @@ class ScrapbookScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: BrutalTheme.cyan,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                        border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '+2',
-                        style: GoogleFonts.spaceMono(
+                        style: GoogleFonts.karla(
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
                           color: BrutalTheme.inkBlack,
@@ -308,7 +288,7 @@ class ScrapbookScreen extends StatelessWidget {
 
   Widget _buildMudfestCard(BuildContext context) {
     return BrutalCard(
-      color: Colors.white,
+      color: BrutalTheme.card,
       rotationDegrees: 2.0,
       onTap: () {
         onTripSelected("Mudfest 2024");
@@ -322,7 +302,7 @@ class ScrapbookScreen extends StatelessWidget {
             child: Container(
               height: 160,
               decoration: BoxDecoration(
-                border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                 color: Colors.white,
                 image: const DecorationImage(
                   image: NetworkImage(
@@ -340,9 +320,9 @@ class ScrapbookScreen extends StatelessWidget {
               children: [
                 Text(
                   "MUDFEST 2024",
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.instrumentSerif(
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 16,
                     color: BrutalTheme.inkBlack,
                   ),
                 ),
@@ -390,7 +370,7 @@ class ScrapbookScreen extends StatelessWidget {
             child: Container(
               height: 100,
               decoration: BoxDecoration(
-                border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.0),
                 color: Colors.black,
                 image: const DecorationImage(
                   image: NetworkImage(
@@ -409,9 +389,9 @@ class ScrapbookScreen extends StatelessWidget {
               children: [
                 Text(
                   "VEGAS MISTAKES",
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.instrumentSerif(
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: 16,
                     color: BrutalTheme.yellow,
                   ),
                 ),
@@ -445,7 +425,7 @@ class ScrapbookScreen extends StatelessWidget {
             child: Container(
               height: 130,
               decoration: BoxDecoration(
-                border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+                border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
                 color: Colors.white,
                 image: const DecorationImage(
                   image: NetworkImage(
@@ -463,9 +443,9 @@ class ScrapbookScreen extends StatelessWidget {
               children: [
                 Text(
                   "ROADTRIP '22",
-                  style: GoogleFonts.spaceMono(
+                  style: GoogleFonts.instrumentSerif(
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 16,
                     color: BrutalTheme.inkBlack,
                   ),
                 ),
@@ -493,7 +473,7 @@ class ScrapbookScreen extends StatelessWidget {
       height: 24,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: BrutalTheme.inkBlack, width: 2.0),
+        border: Border.all(color: const Color(0xFFE1D4B6), width: 1.0),
         image: DecorationImage(
           image: NetworkImage(url),
           fit: BoxFit.cover,
