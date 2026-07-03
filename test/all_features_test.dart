@@ -175,6 +175,7 @@ void main() {
             onProduceTrack: () {},
             tripName: "Cabo Fail '23",
             initialLyrics: "Oh Cabo...",
+            memories: const [],
             onLyricsUpdated: (_) {},
           ),
         ),

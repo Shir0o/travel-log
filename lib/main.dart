@@ -217,6 +217,7 @@ class _MainShellState extends State<MainShell> {
         onProduceTrack: () => _navigateToTab(1), // Navigates to Studio tab
         tripName: _selectedTrip,
         initialLyrics: _tripLyrics[_selectedTrip] ?? "",
+        memories: _tripMemories[_selectedTrip] ?? [],
         onLyricsUpdated: (newLyrics) {
           setState(() {
             _tripLyrics[_selectedTrip] = newLyrics;

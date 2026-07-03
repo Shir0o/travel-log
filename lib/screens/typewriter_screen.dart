@@ -1,14 +1,19 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 import '../widgets/brutal_widgets.dart';
+import 'evidence_screen.dart';
 
 class TypewriterScreen extends StatefulWidget {
   final VoidCallback onBack;
   final VoidCallback onProduceTrack;
   final String tripName;
   final String initialLyrics;
+  final List<TimelineMemory> memories;
   final ValueChanged<String> onLyricsUpdated;
 
   const TypewriterScreen({
@@ -17,6 +22,7 @@ class TypewriterScreen extends StatefulWidget {
     required this.onProduceTrack,
     required this.tripName,
     required this.initialLyrics,
+    required this.memories,
     required this.onLyricsUpdated,
   }) : super(key: key);
 
@@ -33,9 +39,15 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
   
   // Typewriter text state
   int _charCount = 0;
-  String get _targetText => widget.initialLyrics;
+  String? _generatedLyrics;
+  String get _targetText => _generatedLyrics ?? widget.initialLyrics;
       
   Timer? _typewriterTimer;
+
+  // API settings state
+  String _apiKey = '';
+  String _selectedModel = 'claude-3-5-sonnet-latest';
+  String? _errorMessage;
 
   String get _note1Text {
     if (widget.tripName == "Mudfest 2024") return '"Waded in mud for hours!"\n- Alex';
@@ -110,19 +122,297 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
         'https://lh3.googleusercontent.com/aida-public/AB6AXuCghbkiryWQhllkb3HHw0EoxcfB-7EWQiMknmg3PbaUm3ONhic0-gmWdSo2UQ3b8NfhOisBharEcLXY9w9S97Cuj6Jz5rKfksZt8Le-HpOx37FOZ01gG19h-t8NKuFmSNP1hFg3edNKBbxCte9n-tsdM_WFVLJDZphFIKEwwXFoID0NQYcjVs2_2CiPpVd-R8HmnxRO78nrdnj_VkgBn5t0sSpNjBcM8feOz4HqV5jMZuTJ1zVFzoBZ_iAqnajoZXvMNtqBRSScElo'
       ];
     }
-  }
-
-  @override
+  }  @override
   void initState() {
     super.initState();
     _charCount = widget.initialLyrics.isNotEmpty ? widget.initialLyrics.length : 0;
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _apiKey = prefs.getString('claude_api_key') ?? '';
+        _selectedModel = prefs.getString('claude_selected_model') ?? 'claude-3-5-sonnet-latest';
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _saveSettings(String key, String model) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('claude_api_key', key);
+      await prefs.setString('claude_selected_model', model);
+      setState(() {
+        _apiKey = key;
+        _selectedModel = model;
+      });
+    } catch (_) {}
+  }
+
+  void _showSettingsDialog() {
+    final keyController = TextEditingController(text: _apiKey);
+    String tempModel = _selectedModel;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: BrutalCard(
+                color: BrutalTheme.backgroundLight,
+                borderWidth: 4.0,
+                showShadow: true,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'CLAUDE API SETTINGS',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.inkBlack,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'API KEY',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.graphite,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      decoration: BrutalTheme.brutalDecoration(
+                        color: Colors.white,
+                        borderWidth: 2.0,
+                        showShadow: false,
+                      ),
+                      child: TextField(
+                        controller: keyController,
+                        obscureText: true,
+                        style: GoogleFonts.spaceMono(
+                          fontSize: 14,
+                          color: BrutalTheme.inkBlack,
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          hintText: 'sk-ant-api03-...',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'MODEL',
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: BrutalTheme.graphite,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      decoration: BrutalTheme.brutalDecoration(
+                        color: Colors.white,
+                        borderWidth: 2.0,
+                        showShadow: false,
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: tempModel,
+                          isExpanded: true,
+                          dropdownColor: Colors.white,
+                          style: GoogleFonts.spaceMono(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: BrutalTheme.inkBlack,
+                          ),
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              setDialogState(() {
+                                tempModel = newValue;
+                              });
+                            }
+                          },
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'claude-3-5-sonnet-latest',
+                              child: Text('Claude 3.5 Sonnet (Default)'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'claude-3-5-haiku-latest',
+                              child: Text('Claude 3.5 Haiku'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'claude-3-opus-latest',
+                              child: Text('Claude 3 Opus'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: BrutalButton(
+                            color: Colors.white,
+                            height: 44,
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              'CANCEL',
+                              style: GoogleFonts.spaceMono(
+                                fontWeight: FontWeight.bold,
+                                color: BrutalTheme.inkBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: BrutalButton(
+                            color: BrutalTheme.primary,
+                            height: 44,
+                            onPressed: () {
+                              _saveSettings(keyController.text.trim(), tempModel);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'SAVE',
+                              style: GoogleFonts.spaceMono(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _generateLyricsWithClaude() async {
+    setState(() {
+      _isGenerating = true;
+      _errorMessage = null;
+      _noteScale = 0.1;
+      _noteOpacity = 0.0;
+      _noteOffset = const Offset(120.0, -180.0);
+    });
+
+    _charCount = 0;
+    _typewriterTimer?.cancel();
+
+    // Prepare prompt
+    final memoriesText = widget.memories.isEmpty
+        ? "No specific memories documented yet. Write lyrics based on the spirit of the trip name."
+        : widget.memories.map((m) => "- ${m.author}: ${m.text}").join("\n");
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.anthropic.com/v1/messages'),
+        headers: {
+          'x-api-key': _apiKey,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: jsonEncode({
+          'model': _selectedModel,
+          'max_tokens': 1024,
+          'system': "You are an expert songwriter who writes catchy, high-energy travel song lyrics. You write short song segments (e.g. 4-6 lines) in response to trip descriptions and memories. Do not output any chat explanation, conversational filler, markdown formatting (like ```), or formatting notes. Only output the lyrics directly, separating lines with newlines.",
+          'messages': [
+            {
+              'role': 'user',
+              'content': "Write a verse or chorus for a song called 'Road Song'.\nTrip Name: ${widget.tripName}\nMemories:\n$memoriesText\n\nGenerate a short, energetic, and humorous lyrics block (4 to 8 lines) that references these memories."
+            }
+          ]
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final String rawText = data['content'][0]['text'] as String;
+        // Clean any accidental markdown format tags
+        final cleanText = rawText.replaceAll(RegExp(r'^```\w*\n?'), '').replaceAll(RegExp(r'\n?```$'), '').trim();
+
+        setState(() {
+          _generatedLyrics = cleanText;
+        });
+
+        // Trigger typewriter animation
+        _startTypewriterAnimation();
+      } else {
+        final errorBody = response.body;
+        String friendlyError = "API Error (${response.statusCode})";
+        try {
+          final errorData = jsonDecode(errorBody);
+          friendlyError = errorData['error']['message'] ?? friendlyError;
+        } catch (_) {}
+        setState(() {
+          _isGenerating = false;
+          _errorMessage = friendlyError;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isGenerating = false;
+        _errorMessage = "Network connection failed. Please check your internet connection.";
+      });
+    }
   }
 
   void _startGeneration() {
     if (_isGenerating) return;
     
+    if (_apiKey.isEmpty) {
+      _showOfflineNotification();
+      _startMockGeneration();
+    } else {
+      _generateLyricsWithClaude();
+    }
+  }
+
+  void _showOfflineNotification() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: BrutalTheme.yellow,
+        content: Text(
+          "Using mock generation. Configure Claude API key in Settings (cyan gear) for AI lyrics!",
+          style: GoogleFonts.spaceMono(
+            color: BrutalTheme.inkBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 11,
+          ),
+        ),
+        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  void _startMockGeneration() {
     setState(() {
       _isGenerating = true;
+      _errorMessage = null;
+      _generatedLyrics = null; // Revert to initialLyrics/fallback
       _noteScale = 0.1;
       _noteOpacity = 0.0;
       _noteOffset = const Offset(120.0, -180.0);
@@ -131,6 +421,10 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
     _charCount = 0;
     _typewriterTimer?.cancel();
     
+    _startTypewriterAnimation();
+  }
+
+  void _startTypewriterAnimation() {
     Future.delayed(const Duration(milliseconds: 500), () {
       _typewriterTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) {
         if (_charCount < _targetText.length) {
@@ -147,7 +441,6 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
       });
     });
   }
-
   @override
   void dispose() {
     _typewriterTimer?.cancel();
@@ -191,6 +484,20 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                         showShadow: true,
                       ),
                       child: const Icon(Icons.arrow_back, color: BrutalTheme.inkBlack),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: _showSettingsDialog,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BrutalTheme.brutalDecoration(
+                        color: BrutalTheme.cyan,
+                        borderWidth: 3.0,
+                        showShadow: true,
+                      ),
+                      child: const Icon(Icons.settings, color: BrutalTheme.inkBlack),
                     ),
                   ),
                   Expanded(
@@ -250,6 +557,7 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
                 children: [
                   _buildVerse1Block(),
                   const SizedBox(height: 16),
+                  _buildErrorBlock(),
                   _buildChorusBlock(),
                   const SizedBox(height: 16),
                   _buildVerse2EmptyBlock(),
@@ -641,6 +949,46 @@ class _TypewriterScreenState extends State<TypewriterScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildErrorBlock() {
+    if (_errorMessage == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: BrutalCard(
+        color: const Color(0xFFFFB3D9), // Light neon pinkish red
+        borderWidth: 3.0,
+        showShadow: true,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.error_outline, color: BrutalTheme.inkBlack),
+                const SizedBox(width: 8),
+                Text(
+                  "GENERATION ERROR",
+                  style: GoogleFonts.spaceMono(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: BrutalTheme.inkBlack,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _errorMessage!,
+              style: GoogleFonts.spaceMono(
+                fontSize: 12,
+                color: BrutalTheme.inkBlack,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
